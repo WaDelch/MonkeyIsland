@@ -186,12 +186,13 @@ namespace MonkeyIsland1
 
             string[] skullParts = skullBones.Split('\n');
             Console.CursorVisible = false;
-
+            Console.ForegroundColor = ConsoleColor.White;
             for (int i = 0; i < skullParts.Length; i++)
                 if (i % 2 == 0)
                     RPGPrint(skullParts[i]);
                 else
                     RPGPrint(skullParts[i], 10, true);
+            Console.ForegroundColor = ConsoleColor.Gray;
             Console.CursorVisible = true;
         }
 

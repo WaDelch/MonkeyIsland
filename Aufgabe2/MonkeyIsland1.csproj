@@ -64,6 +64,7 @@
     <Compile Include="InputCheck.cs" />
     <Compile Include="Insel.cs" />
     <Compile Include="Kneipe.cs" />
+    <Compile Include="Lokation.cs" />
     <Compile Include="Meer.cs" />
     <Compile Include="Pirat.cs" />
     <Compile Include="Program.cs" />

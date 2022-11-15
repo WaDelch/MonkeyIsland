@@ -13,7 +13,7 @@ namespace MonkeyIsland1
         private List<Schiff> schiff = new List<Schiff>(); //Schiffe, die sich z.Z. in diesem Meer befinden
         private List<Pirat> pirat = new List<Pirat>(); //Piraten, die z.Z. in diesem Meer schwimmen
 
-        public Meer() //Standwerte
+        public Meer() //Standardwerte
         {
             this.bezeichnung = "Blutmeer";
             for (int i = 0; i < 3; i++)
@@ -24,6 +24,7 @@ namespace MonkeyIsland1
                 insel[i].GetStrand().SetBezeichnung($"Strand{i + 1}");
                 insel[i].GetSchiff().SetBezeichnung($"Schiff{i + 1}");
                 insel[i].GetFriedhof().SetBezeichnung($"Friedhof{i + 1}");
+                insel[i].GetHuette().SetBezeichnung($"Huette{i + 1}");
             }
         }
 
@@ -72,7 +73,7 @@ namespace MonkeyIsland1
         public void AddPirat(Pirat p)
         {
             this.pirat.Add(p);
-            p.GetStandort().GetSchiff().DelBesatzung(p);
+            p.GetStandort().GetSchiff().DelBesucher(p);
         }
         public void DelPirat(Pirat p)
         {

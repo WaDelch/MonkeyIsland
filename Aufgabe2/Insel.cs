@@ -95,5 +95,15 @@ namespace MonkeyIsland1
         {
             this.friedhof = f;
         }
+
+        public Huette GetHuette()
+        {
+            return this.huette;
+        }
+
+        public void SetHuette(Huette h)
+        {
+            this.huette = h;
+        }
     }
 }

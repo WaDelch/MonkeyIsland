@@ -4,43 +4,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Aufgabe2
+namespace MonkeyIsland1
 {
     internal class Lokation
     {
-        private string bezeichnung;
-        private string art;
-        private Insel insel;
-        private List<Pirat> besucher = new List<Pirat>();
+        public string bezeichnung;
+        public List<Pirat> besucher = new List<Pirat>();
 
-        public string GetBezeichnung()
+        public String GetBezeichnung()
         {
             return this.bezeichnung;
         }
 
-        public void SetBezeichnung(string s)
+        public void SetBezeichnung(string b)
         {
-            this.bezeichnung = s;
-        }
-
-        public string GetArt()
-        {
-            return this.art;
-        }
-
-        public void SetArt(string s)
-        {
-            this.art = s;
-        }
-
-        public Insel GetInsel()
-        {
-            return this.insel;
-        }
-
-        public void SetInsel(Insel i)
-        {
-            this.insel = i;
+            this.bezeichnung = b;
         }
 
         public List<Pirat> GetBesucher()
@@ -48,13 +26,20 @@ namespace Aufgabe2
             return this.besucher;
         }
 
-        public void SetBesucher(List<Pirat> p)
-        {
-            this.besucher = p;
-        }
-
         public void AddBesucher(Pirat p)
         {
+            //Pirat wechselt Standort -> Pirat aus der Liste des vorherigen Standortes löschen
+            if (p.GetStandort().GetFriedhof().GetBesucher().Contains(p))
+                p.GetStandort().GetFriedhof().DelBesucher(p);
+            else if (p.GetStandort().GetStrand().GetBesucher().Contains(p))
+                p.GetStandort().GetStrand().DelBesucher(p);
+            else if (p.GetStandort().GetKneipe().GetBesucher().Contains(p))
+                p.GetStandort().GetKneipe().DelBesucher(p);
+            else if (p.GetStandort().GetSchiff().GetBesucher().Contains(p))
+                p.GetStandort().GetSchiff().DelBesucher(p);
+            else if (p.GetStandort().GetHuette().GetBesucher().Contains(p))
+                p.GetStandort().GetHuette().DelBesucher(p);
+            //Pirat dem neuen Standort hinzufügen
             this.besucher.Add(p);
         }
 
@@ -62,7 +47,5 @@ namespace Aufgabe2
         {
             this.besucher.Remove(p);
         }
-
-
     }
 }
