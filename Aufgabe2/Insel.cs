@@ -13,9 +13,9 @@ namespace MonkeyIsland1
         private Kneipe kneipe = new Kneipe();
         private Friedhof friedhof = new Friedhof();
         private List<Pirat> besucher = new List<Pirat>();
-        private Schiff schiff = new Schiff();
+        private Schiff schiff = new Schiff(); //Schiffe sind z.Z. der Einfachheit halber Kompositionen von Inseln
+                                              //Jedes Schiff hat also einen festen Heimathafen, von dem es voll abhängig ist
         private Huette huette = new Huette();
-
 
         public string GetBezeichnung()
         {

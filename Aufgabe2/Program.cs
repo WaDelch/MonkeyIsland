@@ -4,11 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
+//gitfront url: https://gitfront.io/r/WaDelch/3EyEG5R5CtJw/MonkeyIsland/
+
 namespace MonkeyIsland1
 {
     internal class Program
     {
-        static List<Pirat> piraten = new List<Pirat>();
+        static List<Pirat> piraten = new List<Pirat>(); //Liste aller lebenden Piraten
         static Meer meer = new Meer();
         static Pirat currentPirat;
         static Insel currentInsel;
@@ -41,7 +44,7 @@ namespace MonkeyIsland1
 
         static void ChangePirate()
         {
-            if (piraten.Count < 1)
+            if (piraten.Count < 1) //WiP
             {
                 Animation.RPGPrint("Es gibt keine lebenden Piraten mehr!\n" +
                     "Willst du einen neuen Piraten anlegen? (j = ja)" +
@@ -85,11 +88,11 @@ namespace MonkeyIsland1
             Random rnd = new Random();
             int randomZahl;
             string[] getraenkeListe = { "Wasser", "Bier", "Grog", "Selbstgebraute Hausmarke" };
-            string standortBonusOption = string.Empty;
             //int[] getraenkePreise = { 2, 4, 6 };
+            string standortBonusOption = string.Empty;
 
             Console.OutputEncoding = Encoding.UTF8;
-            currentInsel = meer.GetInsel()[0]; //Startinsel ist Insel 1
+            currentInsel = meer.GetInsel()[0]; //Startinsel ist Insel1
             Animation.RPGPrint("Willkommen beim Piratenspiel! Yarr!");
             Animation.SkullBones();
             currentPirat = CreatePirate(currentInsel); //Startpirat startet auf Insel 1
@@ -101,7 +104,7 @@ namespace MonkeyIsland1
             Huette currentHuette;
             Standort currentStandort = Standort.Insel;
 
-            do
+            do //Hauptschleife, die das Spiel am Laufen hält
             {
                 currentKneipe = currentInsel.GetKneipe();
                 currentStrand = currentInsel.GetStrand();
@@ -343,14 +346,14 @@ namespace MonkeyIsland1
                                     randomZahl = rnd.Next(1, 101) + 5 * currentPirat.GetBetrunkenheit();
                                     if (randomZahl > 95)
                                     {
-                                        //WiP, Es soll eine Chance bestehen, dass Piraten vom Schiff fallen
-                                        //Je betrunkener der Pirat, desto höher die Chance
-                                        //Piraten im Meer bekommen eine weitere Chance an Land zu schwimmen
-                                        //Je betrunkender der Pirat, desto niedriger die Erfolgschance
-                                        //Piraten sollen also ertrinken können
+                                        //WiP, Es soll eine Chance bestehen, dass Piraten vom Schiff fallen.
+                                        //Je betrunkener der Pirat, desto höher die Chance.
+                                        //Piraten im Meer bekommen eine weitere Chance an Land zu schwimmen.
+                                        //Je betrunkender der Pirat, desto niedriger die Erfolgschance.
+                                        //Piraten sollen also ertrinken können.
                                         //Tote Piraten werden automatisch auf dem Friedhof ihrer Heimatsinsel begraben
-                                        //und sind unspielbar für den Rest des Spielverlaufs
-                                        //Der Kapitän steuert das Schiff automatisch zum HeimatsPort zurück
+                                        //und sind unspielbar für den Rest des Spielverlaufs.
+                                        //Der Kapitän steuert das Schiff automatisch zum HeimatsPort zurück.
                                     }
                                     Console.Clear();
                                     Console.SetCursorPosition(0, 6);
