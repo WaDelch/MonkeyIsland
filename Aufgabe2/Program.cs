@@ -138,7 +138,7 @@ namespace MonkeyIsland1
                 else if (currentHuette.GetBesucher().Contains(currentPirat))
                 {
                     currentStandort = Standort.Huette;
-                    Console.WriteLine("in der Hütte: " + currentFriedhof.GetBezeichnung());
+                    Console.WriteLine("in der Hütte: " + currentHuette.GetBezeichnung());
                     standortBonusOption = "Zimmer für die Nacht mieten";
                 }
                 else
@@ -168,8 +168,8 @@ namespace MonkeyIsland1
                     case 1:
                         Animation.RPGPrint("Wohin möchtest du gehen?\n" +
                             "1) In die Kneipe\n2) An den Strand\n3) Auf das Schiff\n" +
-                            "4) Zum Friedhof\n5) Zur Hütte" + menue);
-                        if (!InputCheck.CheckUInt(out uinput2) || uinput2 > 4)
+                            "4) Zum Friedhof\n5) Zur Hütte\n" + menue);
+                        if (!InputCheck.CheckUInt(out uinput2) || uinput2 > 5)
                             continue;
                         switch (uinput2)
                         {
@@ -194,7 +194,7 @@ namespace MonkeyIsland1
                                 }
                                 break;
                             case 3:
-                                if (currentSchiff == null)
+                                if (currentSchiff == null) // WiP
                                     Animation.RPGPrint("Das Schiff ist zur Zeit nicht da!");
                                 else if (currentStandort == Standort.Schiff)
                                     Animation.RPGPrint("Du bist schon auf dem Schiff!");
@@ -249,6 +249,7 @@ namespace MonkeyIsland1
                                 do
                                 {
                                     Console.Clear();
+                                    Animation.RPGPrint($"~~~=== {currentKneipe.GetBezeichnung()} ===~~~");
                                     if (currentPirat.GetTaler() < 2)
                                     {
                                         Animation.RPGPrint("Du hast nicht genug Taler für Getränke!\n" +
@@ -294,16 +295,17 @@ namespace MonkeyIsland1
                                 do
                                 {
                                     Console.Clear();
+                                    Animation.RPGPrint($"~~~=== {currentStrand.GetBezeichnung()} ===~~~");
                                     Animation.RPGPrint("Du gräbst nach Schätzen.");
                                     System.Threading.Thread.Sleep(200);
                                     Animation.DigSite();
                                     randomZahl = rnd.Next(1, 101);
-                                    if (randomZahl < 5) // 4% Chance 10 Taler zu finden
+                                    if (randomZahl < 9) // 8% Chance 10 Taler zu finden
                                     {
                                         Animation.RPGPrint("Du hast einen Sack mit zehn Talern gefunden!"); //WiP
                                         currentPirat.SetTaler(currentPirat.GetTaler() + 10);
                                     }
-                                    else if (randomZahl < 31) // 30% Chance einen Taler zu finden
+                                    else if (randomZahl < 41) // 40% Chance einen Taler zu finden
                                     {
                                         Animation.RPGPrint("Du hast einen Taler gefunden!");
                                         currentPirat.SetTaler(currentPirat.GetTaler() + 1);
@@ -318,7 +320,8 @@ namespace MonkeyIsland1
                             case Standort.Friedhof:
 
                                 Console.Clear();
-                                Animation.RPGPrint($"Du besuchst die Gräber auf dem Friedhof \"{currentFriedhof}\"." +
+                                Animation.RPGPrint($"~~~=== {currentFriedhof.GetBezeichnung()} ===~~~");
+                                Animation.RPGPrint($"Du besuchst die Gräber auf dem Friedhof." +
                                     "\nFolgende Piraten liegen hier begraben:");
                                 for (int i = 0; i < currentFriedhof.GetDauerbesucher().Count; i++)
                                     Animation.RPGPrint(currentFriedhof.GetDauerbesucher()[i].GetName());
@@ -367,18 +370,21 @@ namespace MonkeyIsland1
                                 break;
 
                             case Standort.Huette:
-                                do
+
+                                while(true)
                                 {
                                     Console.Clear();
+                                    Animation.RPGPrint($"~~~=== {currentHuette.GetBezeichnung()} ===~~~");
                                     if (currentPirat.GetTaler() < 10)
                                     {
                                         Animation.RPGPrint("Du hast nicht genug Taler, um ein Zimmer zu mieten!\nDu wurdest vor die Tür geworfen!");
+                                        Console.ReadLine();
                                         break;
                                     }
-                                    Animation.RPGPrint("Das Zimmer kostet 10 Taler die Nacht.\nWillst du ein Zimmer mieten? (j = ja)\n" + menue);
+                                    Animation.RPGPrint($"Du hast zur Zeit {currentPirat.GetTaler()} Taler.\nEin Zimmer kostet 10 Taler die Nacht.\nWillst du ein Zimmer mieten? (j = ja)\n" + menue);
                                     if (Console.ReadKey().KeyChar != 'j')
-                                        continue;
-                                    Animation.RPGPrint("Für wie viele Nächte willst du übernachten? (max = 5)\n" + menue);
+                                        break;
+                                    Animation.RPGPrint("\nFür wie viele Nächte willst du übernachten? (max = 5)\n" + menue);
                                     if (!InputCheck.CheckUInt(out uinput3) || uinput3 > 5)
                                         break;
                                     else if (currentPirat.GetTaler() < uinput3 * 10)
@@ -386,8 +392,9 @@ namespace MonkeyIsland1
                                         Animation.RPGPrint("Du hast nicht genug Taler für so viele Nächte!");
                                         continue;
                                     }
-                                    currentPirat.SetTaler(currentPirat.GetTaler() - uinput3 * 10);
-                                    //insert Sleepanimation here
+                                    currentPirat.SetTaler(currentPirat.GetTaler() - (int)(uinput3) * 10);
+
+                                    Animation.Sleep();
 
                                     if (currentPirat.GetBetrunkenheit() > 0)
                                     {
@@ -398,7 +405,9 @@ namespace MonkeyIsland1
                                             currentPirat.SetBetrunkenheit(0);
                                         Animation.RPGPrint($"Dein Betrunkenheitslevel ist auf {currentPirat.GetBetrunkenheit()} gesunken.");
                                     }
-                                } while (true);
+                                    Animation.RPGPrint($"Du hast {uinput3} Nacht/Nächte geschlafen und fühlst dich ausgeruht.");
+                                    break;
+                                }
                                 break;
 
                             default:

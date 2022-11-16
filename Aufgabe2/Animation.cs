@@ -96,6 +96,69 @@ namespace MonkeyIsland1
             Console.CursorVisible = true;
         }
 
+        public static void Sleep()
+        {
+            int tempCursorX = Console.CursorLeft;
+            int tempCursorY = Console.CursorTop;
+            string sleeper = "" +
+                "o_______o    \n" +
+                "| &&&,  |  \n" +
+                "|&& = > |\n" +
+                "\\_&__C___\\\n" +
+                "|\\________\\\n" +
+                "|'\\        \\\n" +
+                "  '\\ (      \\\n" +
+                "   '\\   `    \\\n" +
+                "    '\\o_______\\o\n" +
+                "     '|________|\n" +
+                "      |        |";
+            string[] sleeperParts = sleeper.Split('\n');
+            string window = "" +
+                " _____________\n" +
+                "| * (  *    . |\n" +
+                "|.      . *  *|\n" +
+                "|  *     *  . |\n" +
+                "|_____________|";
+            string[] windowParts = window.Split('\n');
+
+            Console.CursorVisible = false;
+            //zeichne Bett mit Schläfer
+            for (int i = 0; i < sleeperParts.Length; i++)
+            {
+                Console.SetCursorPosition(65, i + 5);
+                Console.WriteLine(sleeperParts[i]);
+            }
+            //zeichne Fenster
+            for (int i = 0; i < windowParts.Length; i++)
+            {
+                Console.SetCursorPosition(85, i + 1);
+                Console.WriteLine(windowParts[i]);
+            }
+
+            //Schlafanimation zeichnen
+            Console.SetCursorPosition(75, 7);
+            for (int i = 0; i < 16; i++)
+            {
+                if (i % 4 == 3)
+                {
+                    for (int k = 0; k < 3; k++)
+                    {
+                        Console.CursorLeft -= 2;
+                        Console.CursorTop++;
+                        Console.Write(" ");
+                        Console.CursorLeft--;
+                    }
+                    Console.SetCursorPosition(75, 7);
+                }
+                Console.Write("Z");
+                Console.CursorLeft++;
+                Console.CursorTop--;
+                Thread.Sleep(650);
+            }
+            Console.SetCursorPosition(tempCursorX, tempCursorY);
+            Console.CursorVisible = true;
+        }
+
         public static void DigSite()
         {
             int tempCursorX = Console.CursorLeft;

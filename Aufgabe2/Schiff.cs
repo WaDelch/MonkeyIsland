@@ -8,17 +8,17 @@ namespace MonkeyIsland1
 {
     internal class Schiff : Lokation
     {
-        private Meer meer;
+        //private Meer meer;
 
-        public Meer GetMeer()
-        {
-            return this.meer;
-        }
+        //public Meer GetMeer()
+        //{
+        //    return this.meer;
+        //}
 
-        public void SetMeer(Meer m)
-        {
-            this.meer = m;
-        }
+        //public void SetMeer(Meer m)
+        //{
+        //    this.meer = m;
+        //}
 
     }
 }
