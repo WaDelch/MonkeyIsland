@@ -6,7 +6,7 @@ using System.Threading;
 
 namespace MonkeyIsland1
 {
-    internal class Animation
+    internal static class Animation
     {
         public static void Rocket()
         {
@@ -39,7 +39,7 @@ namespace MonkeyIsland1
             Console.CursorVisible = true;
         }
 
-        public static void Ship()
+        public static void Ship(bool cancelAnim = false)
         {
             int tempCursorX = Console.CursorLeft;
             int tempCursorY = Console.CursorTop;
@@ -65,6 +65,9 @@ namespace MonkeyIsland1
             //Schiffsanimation zeichnen
             for (int k = 0; k < 61; k++)
             {
+                if(k == 30 && cancelAnim == true)
+                    break;
+
                 //Windsegel zeichnen
                 Console.ForegroundColor = ConsoleColor.Gray;
                 for (int i = 4; i < 9; i++)

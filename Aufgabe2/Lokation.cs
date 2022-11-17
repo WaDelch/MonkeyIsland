@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MonkeyIsland1
 {
-    internal class Lokation
+    internal abstract class Lokation
     {
         public string bezeichnung;
         public List<Pirat> besucher = new List<Pirat>();
