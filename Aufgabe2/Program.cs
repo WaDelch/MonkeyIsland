@@ -18,13 +18,15 @@ namespace MonkeyIsland1
         enum Standort { Insel, Strand, Kneipe, Schiff, Friedhof, Huette };
         static string menue = "Sonstige Eingabe = zurück zum Hauptmenü"; //Satz in var ausgelagert, weil oft verwendet
 
-        static Pirat CreatePirate(Insel insel)
+        static Pirat CreatePirate()
         {
             string name;
             Pirat neuerPirat;
+            Random rnd = new Random();
+            Insel startInsel = meer.GetInsel()[rnd.Next(0, meer.GetInsel().Length)]; //zufällige Startinsel
             while (true)
             {
-                Animation.RPGPrint("Wie soll der Pirat heißen?");
+                Animation.RPGPrint("\nWie soll der Pirat heißen?");
                 name = Console.ReadLine();
                 if (!InputCheck.CheckAlphaNum(name))
                 {
@@ -33,9 +35,9 @@ namespace MonkeyIsland1
                     Console.Clear();
                     continue;
                 }
-                neuerPirat = new Pirat(name, meer, insel);
+                neuerPirat = new Pirat(name, meer, startInsel);
                 piraten.Add(neuerPirat);
-                meer.GetInsel()[0].AddBesucher(neuerPirat);
+                startInsel.AddBesucher(neuerPirat);
                 Animation.RPGPrint($"Der Pirat {neuerPirat.GetName()} wurde erstellt.");
                 break;
             }
@@ -46,6 +48,7 @@ namespace MonkeyIsland1
         {
             if (piraten.Count < 1) //WiP
             {
+                Random rnd = new Random();
                 Animation.RPGPrint("Es gibt keine lebenden Piraten mehr!\n" +
                     "Willst du einen neuen Piraten anlegen? (j = ja)" +
                     "\nSonstige Eingabe = Programm beenden");
@@ -54,7 +57,8 @@ namespace MonkeyIsland1
                     Animation.RPGPrint("Programm beendet.");
                     Environment.Exit(0);
                 }
-                currentPirat = CreatePirate(meer.GetInsel()[0]);
+                currentPirat = CreatePirate();
+                currentInsel = currentPirat.GetStandort();
             }
             else
             {
@@ -83,19 +87,19 @@ namespace MonkeyIsland1
 
         static void Main(string[] args)
         {
-            uint uinput, uinput2, uinput3; //Benutzereingaben
-            char uinput4 = 'j';
+            uint uinput, uinput2, uinput3, uinput4; //Benutzereingaben
+            char uinput5 = 'j';
             Random rnd = new Random();
             int randomZahl;
             string[] getraenkeListe = { "Wasser", "Bier", "Grog", "Selbstgebraute Hausmarke" };
             //int[] getraenkePreise = { 2, 4, 6 };
             string standortBonusOption = string.Empty;
+            Console.OutputEncoding = Encoding.UTF8; //notwendig für einige Animationen
 
-            Console.OutputEncoding = Encoding.UTF8;
-            currentInsel = meer.GetInsel()[0]; //Startinsel ist Insel1
             Animation.RPGPrint("Willkommen beim Piratenspiel! Yarr!");
             Animation.SkullBones();
-            currentPirat = CreatePirate(currentInsel); //Startpirat startet auf Insel 1
+            currentPirat = CreatePirate(); //Startpirat
+            currentInsel = currentPirat.GetStandort(); //Startinsel
             Console.ReadLine();
             Kneipe currentKneipe;
             Strand currentStrand;
@@ -232,7 +236,7 @@ namespace MonkeyIsland1
                         break;
 
                     case 2:
-                        CreatePirate(meer.GetInsel()[0]);
+                        CreatePirate();
                         break;
 
                     case 3:
@@ -289,8 +293,8 @@ namespace MonkeyIsland1
                                     else
                                         Animation.Drink();
                                     Animation.RPGPrint("Willst du weitertrinken? (j = ja)\n" + menue);
-                                    uinput4 = Console.ReadKey().KeyChar;
-                                } while (uinput4 == 'j');
+                                    uinput5 = Console.ReadKey().KeyChar;
+                                } while (uinput5 == 'j');
                                 break;
 
                             case Standort.Strand:
@@ -340,168 +344,187 @@ namespace MonkeyIsland1
                                     continue;
 
                                 if (uinput3 - 1 == Array.IndexOf(meer.GetInsel(), currentInsel))
-                                    Animation.RPGPrint("Du bist schon hier!");
-                                else
                                 {
-                                    randomZahl = rnd.Next(1, 101) + 5 * currentPirat.GetBetrunkenheit();
-                                    if (randomZahl > 95)
+                                    Animation.RPGPrint("Du bist schon hier!");
+                                    continue;
+                                }
+
+                                //Schiff fährt los
+                                Console.Clear();
+                                Console.SetCursorPosition(0, 6);
+                                Console.WriteLine(currentInsel.GetBezeichnung()); //Startinsel anzeigen
+                                Console.SetCursorPosition(99 - currentInsel.GetBezeichnung().Length, 6);
+                                Console.WriteLine(currentInsel.GetBezeichnung()); //Zielinsel anzeigen
+                                currentInsel.DelBesucher(currentPirat); //Pirat nicht mehr auf der alten Insel
+                                currentSchiff.DelBesucher(currentPirat); //Pirat nicht mehr auf dem Schiff (Resultat aller derzeit implementierten, folgenden Aktionen)
+                                randomZahl = rnd.Next(1, 101) + 5 * currentPirat.GetBetrunkenheit(); //Chance vom Schiff zu fallen
+                                if (randomZahl > 95) //Pirat vom Schiff gefallen
+                                {
+                                    Animation.Ship(true); //Schiffsanimation bricht ab, weil der Pirat vom Schiff gefallen ist
+                                    int drownChance = 0; //Chance zu ertrinken, steigt mit jeder folgenden Aktion/Entscheidung
+                                    Console.Clear();
+                                    Animation.RPGPrint("Torkelnd bewegst du dich während der Überfahrt entlang der Reling.\n" +
+                                        "Plötzlich wird das Schiff von einer großen Welle erwischt und\n" +
+                                        "du fällst über Bord ins eiskalte Wasser! Nach einem kurzen Moment der Realisierung und Orientierung,\n" +
+                                        "schwimmst du panisch an die Oberfläche und\n" +
+                                        "musst zusehen, wie das Schiff ohne dich weiterfährt!\n");
+                                    Console.ReadLine();
+                                    do //Entscheidungsmöglichkeiten im Wasser; können wiederholt werden
                                     {
-                                        int drownChance = 0;
-                                        Animation.RPGPrint("Torkelnd bewegst du dich während der Überfahrt entlang der Reling.\n" +
-                                            "Plötzlich wird das Schiff von einer großen Welle erwischt und\n" +
-                                            "du fällst über Bord ins eiskalte Wasser! Nach einem kurzen Moment der Realisierung und Orientierung,\n" +
-                                            "schwimmst du panisch an die Oberfläche und\n" +
-                                            "musst zusehen, wie das Schiff ohne dich weiterfährt!\n");
-                                        Console.ReadLine();
-                                        do
+                                        Console.Clear();
+                                        //WiP, evtl. Schwimmanimation/-bild ausgeben
+                                        Animation.RPGPrint("Was willst du jetzt tun?\n1) Um Hilfe schreien!\n" +
+                                            "2) Versuchen zum Schiff zu schwimmen\n" +
+                                            "3) Versuchen dich an Land zu retten\n" +
+                                            "Sonstige Eingabe = auf Hilfe warten");
+                                        if (!InputCheck.CheckUInt(out uinput4) || uinput4 > 3)
                                         {
-                                            Console.Clear();
-                                            Animation.RPGPrint("Was willst du jetzt tun?\n1) Um Hilfe schreien!\n" +
-                                                "2) Versuchen zum Schiff zu schwimmen\n" +
-                                                "3) Versuchen dich an Land zu retten\n" +
-                                                "Sonstige Eingabe = auf Hilfe warten");
-                                            if (!InputCheck.CheckUInt(out uinput3) || uinput3 > 3)
-                                            {
-                                                Animation.RPGPrint("Du treibst im Wasser und wartest auf Hilfe, aber vergeblich...\n" +
+                                            Animation.RPGPrint("Du treibst im Wasser und wartest auf Hilfe, aber vergeblich...\n" +
+                                                "Deine Körpertemperatur und Überlebenschance sinkt!");
+                                            Console.ReadLine();
+                                            drownChance += 5;
+                                            continue;
+                                        }
+                                        switch (uinput4)
+                                        {
+                                            case 1:
+                                                Animation.RPGPrint("Du schreist so laut du kannst um Hilfe,\n" +
+                                                    "aber niemand kann dich hören...\nDeine Körpertemperatur und Überlebenschance sinkt!");
+                                                Console.ReadLine();
+                                                drownChance += 5;
+                                                break;
+                                            case 2:
+                                                Animation.RPGPrint("Du ruderst so schnell du kannst mit Armen und Füßen\n" +
+                                                    "und versuchst das Schiff einzuholen, aber vergeblich...\n" +
                                                     "Deine Körpertemperatur und Überlebenschance sinkt!");
                                                 Console.ReadLine();
                                                 drownChance += 5;
-                                                continue;
-                                            }
-                                            switch(uinput3)
-                                            {
-                                                case 1:
-                                                    Animation.RPGPrint("Du schreist so laut du kannst um Hilfe,\n" +
-                                                        "aber niemand kann dich hören...\nDeine Körpertemperatur und Überlebenschance sinkt!");
-                                                    Console.ReadLine();
-                                                    drownChance += 5;
-                                                    break;
-                                                case 2:
-                                                    Animation.RPGPrint("Du ruderst so schnell du kannst mit Armen und Füßen\n" +
-                                                        "und versuchst das Schiff einzuholen, aber vergeblich...\n" +
-                                                        "Deine Körpertemperatur und Überlebenschance sinkt!");
-                                                    Console.ReadLine();
-                                                    drownChance += 5;
-                                                    break;
-                                                default:
-                                                    continue;
-                                            }
-                                            if(uinput3 == 3)
-                                            {
-                                                Animation.RPGPrint("Du glaubst Land am horizont erblicken zu können\n" +
-                                                    "und entscheidest dich in diese Richtung zu schwimmen.\n" +
-                                                    "Du kämpfst mit aller Kraft gegen Kälte und Erschöpfung an,\n" +
-                                                    "doch irgendwann gibt dein Körper auf und du siehst nur noch schwarz...");
-                                                Console.ReadLine();
-                                                drownChance += 35;
                                                 break;
-                                            }
-                                        } while (true);
-                                        //randomZahl = rnd.Next(1, 101);
-
-                                    if (drownChance + 5 * currentPirat.GetBetrunkenheit() > rnd.Next(1, 101))
-                                        {
-                                            Animation.RPGPrint("Das letzte was du spürst ist eine allumfassende Kälte,\n" +
-                                                "die dich langsam verschlingt...");
-                                            piraten.Remove(currentPirat); //Pirat nicht mehr in der Liste der lebenden Piraten
-                                            currentSchiff.DelBesucher(currentPirat); //Pirat nicht mehr auf dem Schiff
-                                            currentInsel.DelBesucher(currentPirat); //Pirat nicht mehr auf der Insel
-                                            currentPirat.GetHeimat().GetFriedhof().AddDauerbesucher(currentPirat);
-                                            Console.ReadKey();
-                                            Animation.RPGPrint("Du bist gestorben!");
-                                            Animation.SkullBones();
-                                            Animation.RPGPrint("Taste drücken...");
-                                            Console.Clear();
-                                            Animation.RPGPrint("Was willst du jetzt tun?\n1) Piraten wechseln\n2) Piraten erstellen und wechseln\n" +
-                                                "Sonstige Eingabe = Programm beenden");
-                                            if(!InputCheck.CheckUInt(out uinput3) || uinput3 > 2)
-                                            {
-                                                Animation.RPGPrint("Programm beendet.");
-                                                return;
-                                            }
-                                            if (uinput3 == 1)
-                                                ChangePirate();
-                                            else if (uinput3 == 2)
-                                            {
-                                                CreatePirate(meer.GetInsel()[0]);
-                                                ChangePirate();
-                                            }
+                                            default:
+                                                break;
                                         }
-                                    else
+                                        if (uinput4 == 3) //Versuch sich an Land zu retten ist die letzte Entscheidung
                                         {
-                                            //WiP Pirat konnte sich auf andere Insel retten
-                                            //andere Insel = nicht Quell- und Zielinsel
+                                            Animation.RPGPrint("Du glaubst Land am horizont erblicken zu können\n" +
+                                                "und entscheidest dich in diese Richtung zu schwimmen.\n" +
+                                                "Du kämpfst mit aller Kraft gegen Kälte und Erschöpfung an,\n" +
+                                                "doch irgendwann gibt dein Körper auf und du siehst nur noch schwarz...");
+                                            Console.ReadLine();
+                                            drownChance += 35; //Mindestchance zu ertrinken
+                                            break;
                                         }
+                                        if (drownChance > 99) //zu viele falsche Entscheidungen = ertrunken
+                                            break;
+                                    } while (true);
+                                    if (drownChance + 5 * currentPirat.GetBetrunkenheit() > rnd.Next(1, 101)) //prüfen, ob ertrunken
+                                    {
+                                        Animation.RPGPrint("Das letzte was du spürst ist eine allumfassende Kälte,\n" +
+                                            "die dich langsam verschlingt...");
+                                        piraten.Remove(currentPirat); //Pirat nicht mehr in der Liste der lebenden Piraten
 
+                                        currentPirat.GetHeimat().GetFriedhof().AddDauerbesucher(currentPirat); //Pirat auf dem Friedhof seiner Heimatsinsel beerdigt
+                                        Console.ReadLine();
+                                        Console.Clear();
+                                        Animation.RPGPrint("Du bist gestorben!");
+                                        Animation.SkullBones();
+                                        Animation.RPGPrint("Taste drücken...");
+                                        Console.ReadLine();
+                                        Console.Clear();
+                                        Animation.RPGPrint("Was willst du jetzt tun?\n1) Piraten wechseln\n2) Piraten erstellen und wechseln\n" +
+                                            "Sonstige Eingabe = Programm beenden");
+                                        if (!InputCheck.CheckUInt(out uinput4) || uinput4 > 2)
+                                        {
+                                            Animation.RPGPrint("Programm beendet.");
+                                            return;
+                                        }
+                                        if (uinput4 == 1)
+                                        {
+                                            ChangePirate();
+                                            break;
+                                        }
+                                        else if (uinput4 == 2)
+                                        {
+                                            CreatePirate();
+                                            ChangePirate();
+                                            break;
+                                        }
                                     }
-                               
+                                    else //Pirat konnte sich retten
+                                    {
+                                        currentInsel = meer.GetInsel()[rnd.Next(0, 3)]; //auf zufällige Insel gerettet
+                                        currentInsel.AddBesucher(currentPirat);
+                                        currentPirat.SetStandort(currentInsel);
+                                        currentStandort = Standort.Strand;
+                                        Console.Clear();
+                                        Animation.RPGPrint("...\n....\n.....", 150);
+                                        Animation.RPGPrint("Das Rauschen des Meeres weckt dich auf.\nEs dauert einen Moment\n" +
+                                            "bis du zu dir kommst und dich orientierst...\n" +
+                                            "Schließlich stellst du fest, dass du an Land gespült wurdest!\n" +
+                                            $"Du befindest dich jetzt auf dem Strand der Insel {currentInsel.GetBezeichnung()}");
+                                        break;
+                                    }
+                                }
+                                //sichere Überfahrt
                                 Console.Clear();
-                                Console.SetCursorPosition(0, 6);
-                                Console.WriteLine(currentInsel.GetBezeichnung());
-                                currentInsel.DelBesucher(currentPirat); //Pirat nicht mehr auf der alten Insel
-                                currentSchiff.DelBesucher(currentPirat); //Pirat nicht mehr auf dem Schiff
                                 currentInsel = meer.GetInsel()[uinput3 - 1]; //wechsle Insel
                                 currentInsel.AddBesucher(currentPirat); //Pirat auf neuer Insel
                                 currentPirat.SetStandort(currentInsel); //Pirat hat neue Insel als Standort 
                                 currentStandort = Standort.Insel;
-                                Console.SetCursorPosition(99 - currentInsel.GetBezeichnung().Length, 6);
-                                Console.WriteLine(currentInsel.GetBezeichnung());
                                 Animation.Ship();
                                 Console.SetCursorPosition(0, 0);
                                 Animation.RPGPrint($"Du bist zur Insel \"{currentInsel.GetBezeichnung()}\" gefahren.");
-                        }
-                        break;
+                                break;
 
-                    case Standort.Huette:
+                            case Standort.Huette:
 
-                        while (true)
-                        {
-                            Console.Clear();
-                            Animation.RPGPrint($"~~~=== {currentHuette.GetBezeichnung()} ===~~~");
-                            if (currentPirat.GetTaler() < 10)
-                            {
-                                Animation.RPGPrint("Du hast nicht genug Taler, um ein Zimmer zu mieten!\nDu wurdest vor die Tür geworfen!");
-                                Console.ReadLine();
+                                while (true)
+                                {
+                                    Console.Clear();
+                                    Animation.RPGPrint($"~~~=== {currentHuette.GetBezeichnung()} ===~~~");
+                                    if (currentPirat.GetTaler() < 10)
+                                    {
+                                        Animation.RPGPrint("Du hast nicht genug Taler, um ein Zimmer zu mieten!\nDu wurdest vor die Tür geworfen!");
+                                        Console.ReadLine();
+                                        break;
+                                    }
+                                    Animation.RPGPrint($"Du hast zur Zeit {currentPirat.GetTaler()} Taler.\nEin Zimmer kostet 10 Taler die Nacht.\nWillst du ein Zimmer mieten? (j = ja)\n" + menue);
+                                    if (Console.ReadKey().KeyChar != 'j')
+                                        break;
+                                    Animation.RPGPrint("\nFür wie viele Nächte willst du übernachten? (max = 5)\n" + menue);
+                                    if (!InputCheck.CheckUInt(out uinput3) || uinput3 > 5)
+                                        break;
+                                    else if (currentPirat.GetTaler() < uinput3 * 10)
+                                    {
+                                        Animation.RPGPrint("Du hast nicht genug Taler für so viele Nächte!");
+                                        continue;
+                                    }
+                                    currentPirat.SetTaler(currentPirat.GetTaler() - (int)(uinput3) * 10);
+
+                                    Animation.Sleep();
+
+                                    if (currentPirat.GetBetrunkenheit() > 0)
+                                    {
+                                        for (int i = 0; i < uinput3; i++)
+                                            //Betrunkenheitslevel sinkt um 1-3 Punkte pro Nacht
+                                            currentPirat.SetBetrunkenheit(currentPirat.GetBetrunkenheit() - rnd.Next(1, 4));
+                                        if (currentPirat.GetBetrunkenheit() < 0)
+                                            currentPirat.SetBetrunkenheit(0);
+                                        Animation.RPGPrint($"Dein Betrunkenheitslevel ist auf {currentPirat.GetBetrunkenheit()} gesunken.");
+                                    }
+                                    Animation.RPGPrint($"Du hast {uinput3} Nacht/Nächte geschlafen und fühlst dich ausgeruht.");
+                                    break;
+                                }
                                 break;
-                            }
-                            Animation.RPGPrint($"Du hast zur Zeit {currentPirat.GetTaler()} Taler.\nEin Zimmer kostet 10 Taler die Nacht.\nWillst du ein Zimmer mieten? (j = ja)\n" + menue);
-                            if (Console.ReadKey().KeyChar != 'j')
-                                break;
-                            Animation.RPGPrint("\nFür wie viele Nächte willst du übernachten? (max = 5)\n" + menue);
-                            if (!InputCheck.CheckUInt(out uinput3) || uinput3 > 5)
-                                break;
-                            else if (currentPirat.GetTaler() < uinput3 * 10)
-                            {
-                                Animation.RPGPrint("Du hast nicht genug Taler für so viele Nächte!");
+
+                            default:
                                 continue;
-                            }
-                            currentPirat.SetTaler(currentPirat.GetTaler() - (int)(uinput3) * 10);
-
-                            Animation.Sleep();
-
-                            if (currentPirat.GetBetrunkenheit() > 0)
-                            {
-                                for (int i = 0; i < uinput3; i++)
-                                    //Betrunkenheitslevel sinkt um 1-3 Punkte pro Nacht
-                                    currentPirat.SetBetrunkenheit(currentPirat.GetBetrunkenheit() - rnd.Next(1, 4));
-                                if (currentPirat.GetBetrunkenheit() < 0)
-                                    currentPirat.SetBetrunkenheit(0);
-                                Animation.RPGPrint($"Dein Betrunkenheitslevel ist auf {currentPirat.GetBetrunkenheit()} gesunken.");
-                            }
-                            Animation.RPGPrint($"Du hast {uinput3} Nacht/Nächte geschlafen und fühlst dich ausgeruht.");
-                            break;
                         }
                         break;
-
                     default:
                         continue;
                 }
-                break;
-                default:
-                        continue;
-            }
                 Console.ReadLine();
-        } while (true);
+            } while (true);
         }
-}
+    }
 }

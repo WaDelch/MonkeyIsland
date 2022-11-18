@@ -65,7 +65,8 @@ namespace MonkeyIsland1
             //Schiffsanimation zeichnen
             for (int k = 0; k < 61; k++)
             {
-                if(k == 30 && cancelAnim == true)
+                if(k == 30 && cancelAnim == true) //Animation bricht in der Mitte ab
+                                                  //falls der Pirat vom Schiff gefallen ist
                     break;
 
                 //Windsegel zeichnen
@@ -247,7 +248,7 @@ namespace MonkeyIsland1
                 "  u$$$uuu$$$$$$$$$uu \"\"$$$$$$$$$$$uuu$$$\n" +
                 "  $$$$$$$$$$\"\"\"\"           \"\"$$$$$$$$$$$\"\n" +
                 "   \"$$$$$\"                      \"\"$$$$\"\"\n" +
-                "     $$$\"                         $$$$\"\n";
+                "     $$$\"                         $$$$\"";
 
 
             string[] skullParts = skullBones.Split('\n');
