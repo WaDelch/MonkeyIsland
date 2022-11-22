@@ -307,12 +307,12 @@ namespace MonkeyIsland1
                                     System.Threading.Thread.Sleep(200);
                                     Animation.DigSite();
                                     randomZahl = rnd.Next(1, 101);
-                                    if (randomZahl < 9) // 8% Chance 10 Taler zu finden
+                                    if (randomZahl < 16) // 15% Chance 10 Taler zu finden
                                     {
-                                        Animation.RPGPrint("Du hast einen Sack mit zehn Talern gefunden!"); //WiP
+                                        Animation.RPGPrint("Du hast einen Sack mit zehn Talern gefunden!");
                                         currentPirat.SetTaler(currentPirat.GetTaler() + 10);
                                     }
-                                    else if (randomZahl < 49) // 40% Chance einen Taler zu finden
+                                    else if (randomZahl < 81) // 65% Chance einen Taler zu finden
                                     {
                                         Animation.RPGPrint("Du hast einen Taler gefunden!");
                                         currentPirat.SetTaler(currentPirat.GetTaler() + 1);
@@ -351,12 +351,14 @@ namespace MonkeyIsland1
 
                                 //Schiff fährt los
                                 Console.Clear();
+                                currentInsel.DelBesucher(currentPirat); //Pirat nicht mehr auf der alten Insel
+                                currentSchiff.DelBesucher(currentPirat); //Pirat nicht mehr auf dem Schiff (Resultat aller derzeit implementierten, folgenden Aktionen)
                                 Console.SetCursorPosition(0, 6);
                                 Console.WriteLine(currentInsel.GetBezeichnung()); //Startinsel anzeigen
                                 Console.SetCursorPosition(99 - currentInsel.GetBezeichnung().Length, 6);
+                                currentInsel = meer.GetInsel()[uinput3 - 1]; //wechsle Insel
                                 Console.WriteLine(currentInsel.GetBezeichnung()); //Zielinsel anzeigen
-                                currentInsel.DelBesucher(currentPirat); //Pirat nicht mehr auf der alten Insel
-                                currentSchiff.DelBesucher(currentPirat); //Pirat nicht mehr auf dem Schiff (Resultat aller derzeit implementierten, folgenden Aktionen)
+
                                 randomZahl = rnd.Next(1, 101) + 5 * currentPirat.GetBetrunkenheit(); //Chance vom Schiff zu fallen
                                 if (randomZahl > 95) //Pirat vom Schiff gefallen
                                 {
@@ -465,8 +467,6 @@ namespace MonkeyIsland1
                                     }
                                 }
                                 //sichere Überfahrt
-                                Console.Clear();
-                                currentInsel = meer.GetInsel()[uinput3 - 1]; //wechsle Insel
                                 currentInsel.AddBesucher(currentPirat); //Pirat auf neuer Insel
                                 currentPirat.SetStandort(currentInsel); //Pirat hat neue Insel als Standort 
                                 currentStandort = Standort.Insel;
