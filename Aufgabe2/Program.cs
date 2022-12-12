@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 
-//gitfront url: https://gitfront.io/r/WaDelch/3EyEG5R5CtJw/MonkeyIsland/
+/* ##################################
+ * ### Textbasiertes Piratenspiel ###
+ * ### Author: WaDelch            ###
+ * ##################################
+ */
 
 namespace MonkeyIsland1
 {
@@ -407,7 +409,7 @@ namespace MonkeyIsland1
                                         }
                                         if (uinput4 == 3) //Versuch sich an Land zu retten ist die letzte Entscheidung
                                         {
-                                            Animation.RPGPrint("Du glaubst Land am horizont erblicken zu können\n" +
+                                            Animation.RPGPrint("Du glaubst Land am Horizont erblicken zu können\n" +
                                                 "und entscheidest dich in diese Richtung zu schwimmen.\n" +
                                                 "Du kämpfst mit aller Kraft gegen Kälte und Erschöpfung an,\n" +
                                                 "doch irgendwann gibt dein Körper auf und du siehst nur noch schwarz...");
@@ -462,7 +464,7 @@ namespace MonkeyIsland1
                                         Animation.RPGPrint("Das Rauschen des Meeres weckt dich auf.\nEs dauert einen Moment\n" +
                                             "bis du zu dir kommst und dich orientierst...\n" +
                                             "Schließlich stellst du fest, dass du an Land gespült wurdest!\n" +
-                                            $"Du befindest dich jetzt auf dem Strand der Insel {currentInsel.GetBezeichnung()}");
+                                            $"Du befindest dich jetzt auf dem Strand der Insel \"{currentInsel.GetBezeichnung()}\"");
                                         break;
                                     }
                                 }
