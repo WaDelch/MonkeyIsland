@@ -25,5 +25,15 @@ namespace MonkeyIsland1
             this.dauerbesucher.Add(p);
             p.GetMeer().DelPirat(p);
         }
+
+        public void Event()
+        {
+            Console.Clear();
+            Animation.RPGPrint($"~~~=== {this.GetBezeichnung()} ===~~~");
+            Animation.RPGPrint($"Du besuchst die Gräber auf dem Friedhof." +
+                "\nFolgende Piraten liegen hier begraben:");
+            for (int i = 0; i < this.GetDauerbesucher().Count; i++)
+                Animation.RPGPrint(this.GetDauerbesucher()[i].GetName());
+        }
     }
 }

@@ -10,6 +10,9 @@ namespace MonkeyIsland1
     {
         public string bezeichnung;
         public List<Pirat> besucher = new List<Pirat>();
+        public Random rnd = new Random();
+        public int randomZahl;
+        public uint uInput;
 
         public String GetBezeichnung()
         {
