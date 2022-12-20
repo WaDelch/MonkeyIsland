@@ -22,7 +22,7 @@ namespace MonkeyIsland1
         //}
 
 
-        public void Event(Meer eMeer, Insel eInsel, Pirat ePirat)
+        public void Event(Meer eMeer, ref Insel eInsel, ref Pirat ePirat)
         {
             uint uInput2;
             Animation.RPGPrint("Zu welcher Insel möchtest du fahren?");

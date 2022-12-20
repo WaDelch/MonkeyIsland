@@ -8,7 +8,7 @@ namespace MonkeyIsland1
 {
     internal class Huette : Lokation
     {
-        public void Event(Pirat ePirat)
+        public void Event(ref Pirat ePirat)
         {
             while (true)
             {

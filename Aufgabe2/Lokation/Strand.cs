@@ -9,7 +9,7 @@ namespace MonkeyIsland1
     internal class Strand : Lokation
     {
 
-        public void Event(Pirat ePirat)
+        public void Event(ref Pirat ePirat)
         {
             do
             {

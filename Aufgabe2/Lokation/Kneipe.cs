@@ -11,7 +11,7 @@ namespace MonkeyIsland1
         string[] getraenkeListe = { "Wasser", "Bier", "Grog", "Selbstgebraute Hausmarke" };
         //int[] getraenkePreise = { 2, 4, 6 };
 
-        public void Event(Pirat ePirat)
+        public void Event(ref Pirat ePirat)
         {
             char uInput2 = 'j';
             do

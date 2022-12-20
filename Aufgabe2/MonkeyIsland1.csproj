@@ -59,18 +59,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Animation.cs" />
-    <Compile Include="Friedhof.cs" />
-    <Compile Include="Huette.cs" />
+    <Compile Include="Lokation\Friedhof.cs" />
+    <Compile Include="Lokation\Huette.cs" />
     <Compile Include="InputCheck.cs" />
     <Compile Include="Insel.cs" />
-    <Compile Include="Kneipe.cs" />
-    <Compile Include="Lokation.cs" />
+    <Compile Include="Lokation\Kneipe.cs" />
+    <Compile Include="Lokation\Lokation.cs" />
     <Compile Include="Meer.cs" />
     <Compile Include="Pirat.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Schiff.cs" />
-    <Compile Include="Strand.cs" />
+    <Compile Include="Lokation\Schiff.cs" />
+    <Compile Include="Lokation\Strand.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

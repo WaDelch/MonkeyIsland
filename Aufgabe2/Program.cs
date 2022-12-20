@@ -35,14 +35,14 @@ namespace MonkeyIsland1
                     Console.WriteLine("Der Name darf nur Zahlen und Buchstaben enthalten!");
                     Console.ReadLine();
                     Console.Clear();
-                    continue;
                 }
-                neuerPirat = new Pirat(name, meer, startInsel);
-                piraten.Add(neuerPirat);
-                startInsel.AddBesucher(neuerPirat);
-                Animation.RPGPrint($"Der Pirat {neuerPirat.GetName()} wurde erstellt.");
-                break;
+                else
+                    break;
             }
+            neuerPirat = new Pirat(name, meer, startInsel);
+            piraten.Add(neuerPirat);
+            startInsel.AddBesucher(neuerPirat);
+            Animation.RPGPrint($"Der Pirat {neuerPirat.GetName()} wurde erstellt.");
             return neuerPirat;
         }
 
@@ -249,11 +249,11 @@ namespace MonkeyIsland1
                         switch (currentStandort)
                         {
                             case Standort.Kneipe:
-                                currentInsel.GetKneipe().Event(currentPirat);
+                                currentInsel.GetKneipe().Event(ref currentPirat);
                                 break;
 
                             case Standort.Strand:
-                                currentInsel.GetStrand().Event(currentPirat);
+                                currentInsel.GetStrand().Event(ref currentPirat);
                                 break;
 
                             case Standort.Friedhof:
@@ -261,11 +261,11 @@ namespace MonkeyIsland1
                                 break;
 
                             case Standort.Schiff:
-                                currentInsel.GetSchiff().Event(meer, currentInsel, currentPirat);
+                                currentInsel.GetSchiff().Event(meer, ref currentInsel, ref currentPirat);
                                 break;
 
                             case Standort.Huette:
-                                currentInsel.GetHuette().Event(currentPirat);
+                                currentInsel.GetHuette().Event(ref currentPirat);
                                 break;
 
                             default:
