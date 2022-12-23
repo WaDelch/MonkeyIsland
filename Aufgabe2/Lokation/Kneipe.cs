@@ -9,7 +9,7 @@ namespace MonkeyIsland1
     internal class Kneipe : Lokation
     {
         string[] getraenkeListe = { "Wasser", "Bier", "Grog", "Selbstgebraute Hausmarke" };
-        //int[] getraenkePreise = { 2, 4, 6 };
+        int[] getraenkePreise = { 1, 3, 4, 6 };     
 
         public void Event(ref Pirat ePirat)
         {
@@ -18,7 +18,7 @@ namespace MonkeyIsland1
             {
                 Console.Clear();
                 Animation.RPGPrint($"~~~=== {this.GetBezeichnung()} ===~~~");
-                if (ePirat.GetTaler() < 2)
+                if (ePirat.GetTaler() < 1)
                 {
                     Animation.RPGPrint("Du hast nicht genug Taler für Getränke!\n" +
                         "Schnorrer fliegen vor die Tür!");
@@ -26,12 +26,12 @@ namespace MonkeyIsland1
                 }
                 Animation.RPGPrint("Hier ist die Getränkeliste: ");
                 for (int i = 0; i < getraenkeListe.Length; i++)
-                    Animation.RPGPrint($"{i + 1}) {getraenkeListe[i]} - {(i + 1) * 2} Taler");
-
+                    Animation.RPGPrint($"{i + 1}) {getraenkeListe[i]} - {getraenkePreise[i]} Taler");
                 Animation.RPGPrint(Program.menue + "\nDu hast zur Zeit " + ePirat.GetTaler() + " Taler.\nWas möchtest du bestellen?");
                 if (!InputCheck.CheckUInt(out uInput) || uInput > getraenkeListe.Length)
                     break;
-                if (uInput * 2 > ePirat.GetTaler())
+
+                if (getraenkePreise[uInput - 1] > ePirat.GetTaler())
                 {
                     Animation.RPGPrint("Du hast nicht genug Taler!");
                     Console.ReadLine();
@@ -43,7 +43,7 @@ namespace MonkeyIsland1
                     Console.ReadLine();
                     continue;
                 }
-                ePirat.SetTaler(ePirat.GetTaler() - (int)(uInput * 2));
+                ePirat.SetTaler(ePirat.GetTaler() - getraenkePreise[uInput - 1]);
                 Animation.RPGPrint($"Du hebst einen Becher \"{getraenkeListe[uInput - 1]}\"!");
                 if (uInput != 1) // Wasser macht nicht betrunken
                 {

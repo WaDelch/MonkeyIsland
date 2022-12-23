@@ -21,71 +21,6 @@ namespace MonkeyIsland1
         public enum Standort { Insel, Strand, Kneipe, Schiff, Friedhof, Huette };
         public static string menue = "Sonstige Eingabe = zurück zum Hauptmenü"; //Satz in var ausgelagert, weil oft verwendet
 
-        public static Pirat CreatePirate()
-        {
-            string name;
-            Pirat neuerPirat;
-            Insel startInsel = meer.GetInsel()[rnd.Next(0, meer.GetInsel().Length)]; //zufällige Startinsel
-            while (true)
-            {
-                Animation.RPGPrint("\nWie soll der Pirat heißen?");
-                name = Console.ReadLine();
-                if (!InputCheck.CheckAlphaNum(name))
-                {
-                    Console.WriteLine("Der Name darf nur Zahlen und Buchstaben enthalten!");
-                    Console.ReadLine();
-                    Console.Clear();
-                }
-                else
-                    break;
-            }
-            neuerPirat = new Pirat(name, meer, startInsel);
-            piraten.Add(neuerPirat);
-            startInsel.AddBesucher(neuerPirat);
-            Animation.RPGPrint($"Der Pirat {neuerPirat.GetName()} wurde erstellt.");
-            return neuerPirat;
-        }
-
-        public static void ChangePirate()
-        {
-            if (piraten.Count < 1)
-            {
-                Animation.RPGPrint("Es gibt keine lebenden Piraten mehr!\n" +
-                    "Willst du einen neuen Piraten anlegen? (j = ja)" +
-                    "\nSonstige Eingabe = Programm beenden");
-                if (Console.ReadKey().KeyChar != 'j')
-                {
-                    Animation.RPGPrint("Programm beendet.");
-                    Environment.Exit(0);
-                }
-                currentPirat = CreatePirate();
-                currentInsel = currentPirat.GetStandort();
-            }
-            else
-            {
-                int uinput;
-                Animation.RPGPrint("Zu welchem Piraten willst Du wechseln?");
-                for (int i = 0; i < piraten.Count; i++)
-                    Animation.RPGPrint($"{i + 1}) {piraten[i].GetName()}");
-                Animation.RPGPrint(menue);
-                if (!InputCheck.CheckInt(out uinput) || uinput > piraten.Count)
-                    return;
-                if (currentPirat == piraten[Convert.ToInt32(uinput) - 1])
-                {
-                    Animation.RPGPrint("Das bist du schon!");
-                    Console.ReadLine();
-                    return;
-                }
-                else
-                {
-                    currentPirat = piraten[Convert.ToInt32(uinput) - 1];
-                    currentInsel = currentPirat.GetStandort();
-                }
-            }
-            Animation.RPGPrint($"Du bist jetzt \"{currentPirat.GetName()}\".");
-            Console.ReadLine();
-        }
-
         static void Main(string[] args)
         {
             uint uInput, uInput2; //Benutzereingaben
@@ -148,7 +83,7 @@ namespace MonkeyIsland1
                     currentStandort = Standort.Insel;
 
                 Console.WriteLine("im Meer: " + meer.GetBezeichnung() +
-                  "\nDein Betrunkenheitslevel: " + currentPirat.GetBetrunkenheit() +
+                  "\nDein Betrunkenheitslevel: " + currentPirat.GetBetrunkenheit() + "/5" +
                   "\nDeine Taler: " + currentPirat.GetTaler());
 
                 Animation.RPGPrint("\nWas möchtest Du als nächstes tun?\n" +
@@ -277,6 +212,70 @@ namespace MonkeyIsland1
                 }
                 Console.ReadLine();
             } while (true);
+        }
+        public static Pirat CreatePirate()
+        {
+            string name;
+            Pirat neuerPirat;
+            Insel startInsel = meer.GetInsel()[rnd.Next(0, meer.GetInsel().Length)]; //zufällige Startinsel
+            while (true)
+            {
+                Animation.RPGPrint("\nWie soll der Pirat heißen?");
+                name = Console.ReadLine();
+                if (!InputCheck.CheckAlphaNum(name))
+                {
+                    Console.WriteLine("Der Name darf nur Zahlen und Buchstaben enthalten!");
+                    Console.ReadLine();
+                    Console.Clear();
+                }
+                else
+                    break;
+            }
+            neuerPirat = new Pirat(name, meer, startInsel);
+            piraten.Add(neuerPirat);
+            startInsel.AddBesucher(neuerPirat);
+            Animation.RPGPrint($"Der Pirat {neuerPirat.GetName()} wurde erstellt.");
+            return neuerPirat;
+        }
+
+        public static void ChangePirate()
+        {
+            if (piraten.Count < 1)
+            {
+                Animation.RPGPrint("Es gibt keine lebenden Piraten mehr!\n" +
+                    "Willst du einen neuen Piraten anlegen? (j = ja)" +
+                    "\nSonstige Eingabe = Programm beenden");
+                if (Console.ReadKey().KeyChar != 'j')
+                {
+                    Animation.RPGPrint("Programm beendet.");
+                    Environment.Exit(0);
+                }
+                currentPirat = CreatePirate();
+                currentInsel = currentPirat.GetStandort();
+            }
+            else
+            {
+                int uinput;
+                Animation.RPGPrint("Zu welchem Piraten willst Du wechseln?");
+                for (int i = 0; i < piraten.Count; i++)
+                    Animation.RPGPrint($"{i + 1}) {piraten[i].GetName()}");
+                Animation.RPGPrint(menue);
+                if (!InputCheck.CheckInt(out uinput) || uinput > piraten.Count)
+                    return;
+                if (currentPirat == piraten[Convert.ToInt32(uinput) - 1])
+                {
+                    Animation.RPGPrint("Das bist du schon!");
+                    Console.ReadLine();
+                    return;
+                }
+                else
+                {
+                    currentPirat = piraten[Convert.ToInt32(uinput) - 1];
+                    currentInsel = currentPirat.GetStandort();
+                }
+            }
+            Animation.RPGPrint($"Du bist jetzt \"{currentPirat.GetName()}\".");
+            Console.ReadLine();
         }
     }
 }

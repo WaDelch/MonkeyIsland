@@ -10,28 +10,29 @@ namespace MonkeyIsland1
     {
         public void Event(ref Pirat ePirat)
         {
+            int preisProNacht = 8;
             while (true)
             {
                 Console.Clear();
                 Animation.RPGPrint($"~~~=== {this.GetBezeichnung()} ===~~~");
-                if (ePirat.GetTaler() < 10)
+                if (ePirat.GetTaler() < preisProNacht)
                 {
                     Animation.RPGPrint("Du hast nicht genug Taler, um ein Zimmer zu mieten!\nDu wurdest vor die Tür geworfen!");
                     Console.ReadLine();
                     break;
                 }
-                Animation.RPGPrint($"Du hast zur Zeit {ePirat.GetTaler()} Taler.\nEin Zimmer kostet 10 Taler die Nacht.\nWillst du ein Zimmer mieten? (j = ja)\n" + Program.menue);
+                Animation.RPGPrint($"Du hast zur Zeit {ePirat.GetTaler()} Taler.\nEin Zimmer kostet {preisProNacht} Taler die Nacht.\nWillst du ein Zimmer mieten? (j = ja)\n" + Program.menue);
                 if (Console.ReadKey().KeyChar != 'j')
                     break;
                 Animation.RPGPrint("\nFür wie viele Nächte willst du übernachten? (max = 5)\n" + Program.menue);
                 if (!InputCheck.CheckUInt(out uInput) || uInput > 5)
                     break;
-                else if (ePirat.GetTaler() < uInput * 10)
+                else if (ePirat.GetTaler() < uInput * preisProNacht)
                 {
                     Animation.RPGPrint("Du hast nicht genug Taler für so viele Nächte!");
                     continue;
                 }
-                ePirat.SetTaler(ePirat.GetTaler() - (int)(uInput) * 10);
+                ePirat.SetTaler(ePirat.GetTaler() - (int)(uInput) * preisProNacht);
 
                 Animation.Sleep();
 
