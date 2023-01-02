@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 
 /* ##################################
@@ -276,6 +278,16 @@ namespace MonkeyIsland1
             }
             Animation.RPGPrint($"Du bist jetzt \"{currentPirat.GetName()}\".");
             Console.ReadLine();
+            SaveGame();
+        }
+
+        static void SaveGame()
+        {
+            using (FileStream fs = File.Open(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\misave.bin", FileMode.OpenOrCreate))
+            {
+                BinaryFormatter bf = new BinaryFormatter();
+                bf.Serialize(fs, piraten);
+            }
         }
     }
 }
