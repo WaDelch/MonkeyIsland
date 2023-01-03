@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MonkeyIsland1.Controllers;
+using System;
 
-namespace MonkeyIsland1
+namespace MonkeyIsland1.Models.Lokation
 {
+    [Serializable]
     internal class Kneipe : Lokation
     {
         string[] getraenkeListe = { "Wasser", "Bier", "Grog", "Selbstgebraute Hausmarke" };

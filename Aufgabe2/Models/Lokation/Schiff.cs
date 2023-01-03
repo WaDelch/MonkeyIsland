@@ -1,27 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MonkeyIsland1.Controllers;
+using System;
 using static MonkeyIsland1.Program;
 
-namespace MonkeyIsland1
+namespace MonkeyIsland1.Models.Lokation
 {
+    [Serializable]
     internal class Schiff : Lokation
     {
-        //private eMeer eMeer;
-
-        //public eMeer GeteMeer()
-        //{
-        //    return this.eMeer;
-        //}
-
-        //public void SeteMeer(eMeer m)
-        //{
-        //    this.eMeer = m;
-        //}
-
-
         public void Event(Meer eMeer, ref Insel eInsel, ref Pirat ePirat)
         {
             uint uInput2;
@@ -142,7 +127,7 @@ namespace MonkeyIsland1
                 }
                 else //Pirat konnte sich retten
                 {
-                    eInsel = eMeer.GetInsel()[rnd.Next(0, 3)]; //auf zufällige Insel gerettet
+                    eInsel = eMeer.GetInsel()[rnd.Next(0, eMeer.GetInsel().Length)]; //auf zufällige Insel gerettet
                     eInsel.AddBesucher(ePirat);
                     ePirat.SetStandort(eInsel);
                     currentStandort = Standort.Strand;

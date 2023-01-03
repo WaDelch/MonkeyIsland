@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MonkeyIsland1
+namespace MonkeyIsland1.Models.Lokation
 {
+    [Serializable]
     internal abstract class Lokation
     {
         public string bezeichnung;

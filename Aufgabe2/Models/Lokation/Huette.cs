@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MonkeyIsland1.Controllers;
+using System;
 
-namespace MonkeyIsland1
+namespace MonkeyIsland1.Models.Lokation
 {
+    [Serializable]
     internal class Huette : Lokation
     {
         public void Event(ref Pirat ePirat)
@@ -14,7 +12,7 @@ namespace MonkeyIsland1
             while (true)
             {
                 Console.Clear();
-                Animation.RPGPrint($"~~~=== {this.GetBezeichnung()} ===~~~");
+                Animation.RPGPrint($"~~~=== {this.bezeichnung} ===~~~");
                 if (ePirat.GetTaler() < preisProNacht)
                 {
                     Animation.RPGPrint("Du hast nicht genug Taler, um ein Zimmer zu mieten!\nDu wurdest vor die Tür geworfen!");
@@ -49,6 +47,5 @@ namespace MonkeyIsland1
                 break;
             }
         }
-
     }
 }

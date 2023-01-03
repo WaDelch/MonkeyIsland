@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MonkeyIsland1
+﻿using MonkeyIsland1.Models.Lokation;
+using System;
+namespace MonkeyIsland1.Models
 {
+    [Serializable]
     internal class Pirat
     {
         private string name;

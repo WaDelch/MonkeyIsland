@@ -1,22 +1,22 @@
-﻿using System;
+﻿using MonkeyIsland1.Models.Lokation;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace MonkeyIsland1
+namespace MonkeyIsland1.Models
 {
+    [Serializable]
     internal class Meer
     {
         private string bezeichnung;
-        private Insel[] insel = new Insel[3]; //Inseln in diesem Meer
-        private List<Schiff> schiff = new List<Schiff>(); //Schiffe, die sich z.Z. in diesem Meer befinden
-        private List<Pirat> pirat = new List<Pirat>(); //Piraten, die z.Z. in diesem Meer schwimmen
+        private Insel[] insel; //Inseln in diesem Meer
+        private List<Schiff> schiff = new List<Schiff>(); //WiP - Schiffe, die sich z.Z. in diesem Meer befinden
+        private List<Pirat> pirat = new List<Pirat>(); //WiP - Piraten, die z.Z. in diesem Meer schwimmen
 
-        public Meer() //Standardwerte
+        public Meer(int nInseln) //Standardwerte
         {
             this.bezeichnung = "Blutmeer";
-            for (int i = 0; i < 3; i++)
+            this.insel = new Insel[nInseln];
+            for (int i = 0; i < nInseln; i++)
             {
                 insel[i] = new Insel();
                 insel[i].SetBezeichnung($"Insel{i + 1}");

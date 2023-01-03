@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
-
+using MonkeyIsland1.Models;
+using MonkeyIsland1.Models.Lokation;
+using MonkeyIsland1.Controllers;
 
 /* ##################################
  * ### Textbasiertes Piratenspiel ###
@@ -15,11 +17,13 @@ namespace MonkeyIsland1
     internal class Program
     {
         public static List<Pirat> piraten = new List<Pirat>(); //Liste aller lebenden Piraten
-        static Meer meer = new Meer();
+        const int anzahlInsel = 5;
+        static Meer meer = new Meer(anzahlInsel);
         static Pirat currentPirat;
         static Insel currentInsel;
         static Random rnd = new Random();
         public static Standort currentStandort;
+        static string savePath = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\save.bin";
         public enum Standort { Insel, Strand, Kneipe, Schiff, Friedhof, Huette };
         public static string menue = "Sonstige Eingabe = zurück zum Hauptmenü"; //Satz in var ausgelagert, weil oft verwendet
 
@@ -31,7 +35,17 @@ namespace MonkeyIsland1
 
             Animation.RPGPrint("Willkommen beim Piratenspiel! Yarr!");
             Animation.SkullBones();
-            currentPirat = CreatePirate(); //Startpirat
+            try
+            {
+                LoadGame();
+                currentPirat = piraten[0];
+                Console.WriteLine("Spielstand wurde geladen.");
+            }
+            catch
+            {
+                Console.WriteLine("Fehler! Spielstand konnte nicht geladen werden.\nNeues Spiel wird gestartet.");
+                currentPirat = CreatePirate(); //Startpirat
+            }
             currentInsel = currentPirat.GetStandort(); //Startinsel
             Console.ReadLine();
             Kneipe currentKneipe;
@@ -100,7 +114,8 @@ namespace MonkeyIsland1
                 if (!InputCheck.CheckUInt(out uInput) || currentStandort != Standort.Insel && uInput > 5
                     || currentStandort == Standort.Insel && uInput > 4)
                 {
-                    Animation.RPGPrint("Programm beendet.");
+                    SaveGame();
+                    Animation.RPGPrint("Programm beendet. Der Spielstand wurde gespeichert.");
                     return;
                 }
                 switch (uInput)
@@ -278,15 +293,23 @@ namespace MonkeyIsland1
             }
             Animation.RPGPrint($"Du bist jetzt \"{currentPirat.GetName()}\".");
             Console.ReadLine();
-            SaveGame();
         }
 
         static void SaveGame()
         {
-            using (FileStream fs = File.Open(System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\misave.bin", FileMode.OpenOrCreate))
+            BinaryFormatter bf = new BinaryFormatter();
+            using (FileStream fs = File.Open(savePath, FileMode.Create))
             {
-                BinaryFormatter bf = new BinaryFormatter();
                 bf.Serialize(fs, piraten);
+            }
+        }
+
+        static void LoadGame()
+        {
+            BinaryFormatter bf = new BinaryFormatter();
+            using (FileStream fs = File.Open(savePath, FileMode.Open))
+            {
+                piraten = (List<Pirat>)bf.Deserialize(fs);
             }
         }
     }
