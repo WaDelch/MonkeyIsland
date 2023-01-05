@@ -1,4 +1,4 @@
-﻿using MonkeyIsland1.Models.Lokation;
+﻿using MonkeyIsland1.Models.Lokations;
 using System;
 namespace MonkeyIsland1.Models
 {
@@ -6,16 +6,18 @@ namespace MonkeyIsland1.Models
     internal class Pirat
     {
         private string name;
-        private Insel standort;
+        private Lokation lokation;
+        //private Standort standort;
         private Insel heimat;
         private int betrunkenheit;
         private int taler;
         private Meer meer;
 
-        public Pirat(string n, Meer m, Insel i)
+        public Pirat(string n, Meer m, Insel i, Lokation l = null)
         {
             this.name = n;
-            this.standort = i;
+            //this.standort = Standort.Insel;
+            this.lokation = l;
             this.heimat = i;
             this.meer = m;
             this.betrunkenheit = 0;
@@ -35,22 +37,32 @@ namespace MonkeyIsland1.Models
             this.name = n;
         }
 
-        public Insel GetStandort()
+        public Lokation GetLokation()
         {
-            return this.standort;
+            return this.lokation;
         }
 
-        public void SetStandort(Insel l)
+        public void SetLokation(Lokation l)
         {
-            this.standort = l;
+            this.lokation = l;
         }
+
+        //public Standort GetStandort()
+        //{
+        //    return this.standort;
+        //}
+
+        //public void SetStandort(Standort s)
+        //{
+        //    this.standort = s;
+        //}
 
         public Insel GetHeimat()
         {
             return this.heimat;
         }
 
-        public void SetHeimt(Insel i)
+        public void SetHeimat(Insel i)
         {
             this.heimat = i;
         }

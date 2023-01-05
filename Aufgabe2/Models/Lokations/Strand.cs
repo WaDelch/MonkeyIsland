@@ -1,6 +1,7 @@
 ﻿using System;
+using MonkeyIsland1.Views;
 
-namespace MonkeyIsland1.Models.Lokation
+namespace MonkeyIsland1.Models.Lokations
 {
     [Serializable]
     internal class Strand : Lokation
@@ -28,7 +29,7 @@ namespace MonkeyIsland1.Models.Lokation
                 else
                     Animation.RPGPrint("Du hast nichts gefunden.");
                 Animation.RPGPrint($"Du hast jetzt {ePirat.GetTaler()} Taler.");
-                Animation.RPGPrint("Willst du weitergraben? (j = ja)\n" + Program.menue);
+                Animation.RPGPrint("Willst du weitergraben? (j = ja)\n" + Output.back2mainMenue);
             } while (Console.ReadKey().KeyChar == 'j');
         }
     }

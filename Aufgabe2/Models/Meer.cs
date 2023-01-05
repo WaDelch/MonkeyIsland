@@ -1,4 +1,4 @@
-﻿using MonkeyIsland1.Models.Lokation;
+﻿using MonkeyIsland1.Models.Lokations;
 using System;
 using System.Collections.Generic;
 
@@ -73,7 +73,7 @@ namespace MonkeyIsland1.Models
         public void AddPirat(Pirat p)
         {
             this.pirat.Add(p);
-            p.GetStandort().GetSchiff().DelBesucher(p);
+            p.GetLokation().DelBesucher(p);
         }
         public void DelPirat(Pirat p)
         {

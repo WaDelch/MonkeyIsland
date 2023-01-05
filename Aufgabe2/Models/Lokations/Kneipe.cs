@@ -1,7 +1,8 @@
-﻿using MonkeyIsland1.Controllers;
-using System;
+﻿using System;
+using MonkeyIsland1.Controllers;
+using MonkeyIsland1.Views;
 
-namespace MonkeyIsland1.Models.Lokation
+namespace MonkeyIsland1.Models.Lokations
 {
     [Serializable]
     internal class Kneipe : Lokation
@@ -25,7 +26,7 @@ namespace MonkeyIsland1.Models.Lokation
                 Animation.RPGPrint("Hier ist die Getränkeliste: ");
                 for (int i = 0; i < getraenkeListe.Length; i++)
                     Animation.RPGPrint($"{i + 1}) {getraenkeListe[i]} - {getraenkePreise[i]} Taler");
-                Animation.RPGPrint(Program.menue + "\nDu hast zur Zeit " + ePirat.GetTaler() + " Taler.\nWas möchtest du bestellen?");
+                Animation.RPGPrint(Output.back2mainMenue + "\nDu hast zur Zeit " + ePirat.GetTaler() + " Taler.\nWas möchtest du bestellen?");
                 if (!InputCheck.CheckUInt(out uInput) || uInput > getraenkeListe.Length)
                     break;
 
@@ -51,7 +52,7 @@ namespace MonkeyIsland1.Models.Lokation
                 }
                 else
                     Animation.Drink();
-                Animation.RPGPrint("Willst du weitertrinken? (j = ja)\n" + Program.menue);
+                Animation.RPGPrint("Willst du weitertrinken? (j = ja)\n" + Output.back2mainMenue);
                 uInput2 = Console.ReadKey().KeyChar;
             } while (uInput2 == 'j');
         }

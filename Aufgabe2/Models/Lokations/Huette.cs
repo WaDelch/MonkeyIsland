@@ -1,7 +1,8 @@
-﻿using MonkeyIsland1.Controllers;
-using System;
+﻿using System;
+using MonkeyIsland1.Controllers;
+using MonkeyIsland1.Views;
 
-namespace MonkeyIsland1.Models.Lokation
+namespace MonkeyIsland1.Models.Lokations
 {
     [Serializable]
     internal class Huette : Lokation
@@ -12,17 +13,17 @@ namespace MonkeyIsland1.Models.Lokation
             while (true)
             {
                 Console.Clear();
-                Animation.RPGPrint($"~~~=== {this.bezeichnung} ===~~~");
+                Animation.RPGPrint($"~~~=== {this.GetBezeichnung()} ===~~~");
                 if (ePirat.GetTaler() < preisProNacht)
                 {
                     Animation.RPGPrint("Du hast nicht genug Taler, um ein Zimmer zu mieten!\nDu wurdest vor die Tür geworfen!");
                     Console.ReadLine();
                     break;
                 }
-                Animation.RPGPrint($"Du hast zur Zeit {ePirat.GetTaler()} Taler.\nEin Zimmer kostet {preisProNacht} Taler die Nacht.\nWillst du ein Zimmer mieten? (j = ja)\n" + Program.menue);
+                Animation.RPGPrint($"Du hast zur Zeit {ePirat.GetTaler()} Taler.\nEin Zimmer kostet {preisProNacht} Taler die Nacht.\nWillst du ein Zimmer mieten? (j = ja)\n" + Output.back2mainMenue);
                 if (Console.ReadKey().KeyChar != 'j')
                     break;
-                Animation.RPGPrint("\nFür wie viele Nächte willst du übernachten? (max = 5)\n" + Program.menue);
+                Animation.RPGPrint("\nFür wie viele Nächte willst du übernachten? (max = 5)\n" + Output.back2mainMenue);
                 if (!InputCheck.CheckUInt(out uInput) || uInput > 5)
                     break;
                 else if (ePirat.GetTaler() < uInput * preisProNacht)

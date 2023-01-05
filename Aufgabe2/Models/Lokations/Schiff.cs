@@ -1,8 +1,9 @@
 ﻿using MonkeyIsland1.Controllers;
 using System;
 using static MonkeyIsland1.Program;
+using MonkeyIsland1.Views;
 
-namespace MonkeyIsland1.Models.Lokation
+namespace MonkeyIsland1.Models.Lokations
 {
     [Serializable]
     internal class Schiff : Lokation
@@ -13,7 +14,7 @@ namespace MonkeyIsland1.Models.Lokation
             Animation.RPGPrint("Zu welcher Insel möchtest du fahren?");
             for (int i = 0; i < eMeer.GetInsel().Length; i++) //length = 3
                 Animation.RPGPrint($"{i + 1}) {eMeer.GetInsel()[i].GetBezeichnung()}");
-            Animation.RPGPrint(menue);
+            Animation.RPGPrint(Output.back2mainMenue);
             if (!InputCheck.CheckUInt(out uInput) || uInput > eMeer.GetInsel().Length)
                 return;
 
@@ -129,7 +130,7 @@ namespace MonkeyIsland1.Models.Lokation
                 {
                     eInsel = eMeer.GetInsel()[rnd.Next(0, eMeer.GetInsel().Length)]; //auf zufällige Insel gerettet
                     eInsel.AddBesucher(ePirat);
-                    ePirat.SetStandort(eInsel);
+                    ePirat.SetLokation(eInsel);
                     currentStandort = Standort.Strand;
                     Console.Clear();
                     Animation.RPGPrint("...\n....\n.....", 150);
@@ -142,7 +143,7 @@ namespace MonkeyIsland1.Models.Lokation
             }
             //sichere Überfahrt
             eInsel.AddBesucher(ePirat); //Pirat auf neuer Insel
-            ePirat.SetStandort(eInsel); //Pirat hat neue Insel als Standort 
+            ePirat.SetLokation(eInsel); //Pirat hat neue Insel als Standort 
             currentStandort = Standort.Insel;
             Animation.Ship();
             Console.SetCursorPosition(0, 0);

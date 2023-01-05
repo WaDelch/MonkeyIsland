@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using MonkeyIsland1.Views;
 
-namespace MonkeyIsland1.Models.Lokation
+namespace MonkeyIsland1.Models.Lokations
 {
     [Serializable]
     internal class Friedhof : Lokation
@@ -24,10 +25,10 @@ namespace MonkeyIsland1.Models.Lokation
             p.GetMeer().DelPirat(p);
         }
 
-        public void Event()
+        public override void Event()
         {
             Console.Clear();
-            Animation.RPGPrint($"~~~=== {this.bezeichnung} ===~~~");
+            Animation.RPGPrint($"~~~=== {this.GetBezeichnung()} ===~~~");
             Animation.RPGPrint($"Du besuchst die Gräber auf dem Friedhof." +
                 "\nFolgende Piraten liegen hier begraben:");
             for (int i = 0; i < this.dauerbesucher.Count; i++)

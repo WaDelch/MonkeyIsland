@@ -1,24 +1,41 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using static MonkeyIsland1.Program;
+using MonkeyIsland1.Models;
+using MonkeyIsland1.Models.Lokations;
 
 namespace MonkeyIsland1.Views
 {
-    internal class Output
+    internal static class Output
     {
-        public void ShowMenue(string[] options)
+        public static string[] mainMenueOptions = { "Insel erkunden", "Piraten erstellen", "Piraten wechseln", "Wer ist alles hier?" };
+        public static string[] bonusOptions = { "Nach Schätzen graben", "Einen trinken!", "Auf eine andere Insel fahren", "Gräber besichtigen", "Zimmer für dich Nacht mieten" };
+        public static string[] exploreMenueOptions = { "In die Kneipe", "An den Strand", "Auf das Schiff", "Zum Friedhof", "Zur Hütte" };
+        public static string back2mainMenue = "Sonstige Eingabe = zurück zum Hauptmenü";
+
+        public static void ShowMenue(string[] options, int bonusIndex = -1)
         {
-            for (int i = 0; i < options.Length; i++)
+            int i;
+            for (i = 0; i < options.Length; i++)
             {
-                Console.WriteLine($"{i + 1}) {options[i]}");
+                Animation.RPGPrint($"{i + 1}) {options[i]}");
             }
+
+            if (bonusIndex >= 0)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                Animation.RPGPrint(++i + ") " + bonusOptions[bonusIndex]);
+                Console.ForegroundColor = ConsoleColor.Gray;
+                Animation.RPGPrint("Sonstige Eingabe = Programm beenden");
+            }
+            else
+                Animation.RPGPrint(back2mainMenue);
         }
 
-        public void ShowStats(string[] stats)
+        public static void ShowStats(Pirat p, Meer m, Lokation l)
         {
-
+            Console.WriteLine($"Name: {p.GetName()}\nMeer: {m.GetBezeichnung()}\nStandort: {l.GetBezeichnung()}\n" +
+                              $"Betrunkenheitslevel: {p.GetBetrunkenheit()}\nTaler: {p.GetTaler()}");
         }
     }
 }

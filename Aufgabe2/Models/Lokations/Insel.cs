@@ -1,58 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace MonkeyIsland1.Models.Lokation
+namespace MonkeyIsland1.Models.Lokations
 {
     [Serializable]
-    internal class Insel
+    internal class Insel : Lokation
     {
-        private string bezeichnung;
         private Strand strand = new Strand();
         private Kneipe kneipe = new Kneipe();
         private Friedhof friedhof = new Friedhof();
-        private List<Pirat> besucher = new List<Pirat>();
         private Schiff schiff = new Schiff(); //Schiffe sind z.Z. der Einfachheit halber Kompositionen von Inseln
                                               //Jedes Schiff hat also einen festen Heimathafen, von dem es voll abhängig ist
         private Huette huette = new Huette();
-
-        public string GetBezeichnung()
-        {
-            return this.bezeichnung;
-        }
-
-        public void SetBezeichnung(string s)
-        {
-            this.bezeichnung = s;
-        }
-
-        public List<Pirat> GetBesucher()
-        {
-            List<Pirat> tempB = besucher;
-            for (int i = 0; i < kneipe.GetBesucher().Count; i++)
-                if (!besucher.Contains(kneipe.GetBesucher()[i]))
-                    tempB.Add(kneipe.GetBesucher()[i]);
-            for (int i = 0; i < strand.GetBesucher().Count; i++)
-                if (!besucher.Contains(strand.GetBesucher()[i]))
-                    tempB.Add(strand.GetBesucher()[i]);
-            return tempB;
-        }
-
-        public void SetBesucher(List<Pirat> p)
-        {
-            for (int i = 0; i < p.Count; i++)
-                p[i].GetStandort().DelBesucher(p[i]);
-            this.besucher = p;
-        }
-
-        public void AddBesucher(Pirat p)
-        {
-            this.besucher.Add(p);
-        }
-
-        public void DelBesucher(Pirat p)
-        {
-            this.besucher.Remove(p);
-        }
 
         public Strand GetStrand()
         {

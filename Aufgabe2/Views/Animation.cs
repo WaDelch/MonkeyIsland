@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 
-namespace MonkeyIsland1
+namespace MonkeyIsland1.Views
 {
     internal static class Animation
     {

@@ -4,8 +4,10 @@ using System.Text;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using MonkeyIsland1.Models;
-using MonkeyIsland1.Models.Lokation;
+using MonkeyIsland1.Models.Lokations;
 using MonkeyIsland1.Controllers;
+using MonkeyIsland1.Views;
+using System.Linq;
 
 /* ##################################
  * ### Textbasiertes Piratenspiel ###
@@ -14,109 +16,81 @@ using MonkeyIsland1.Controllers;
 
 namespace MonkeyIsland1
 {
+    public enum Standort { Insel = -1, Strand, Kneipe, Schiff, Friedhof, Huette }; //Bonusoption ab Index >= 0
+
     internal class Program
     {
         public static List<Pirat> piraten = new List<Pirat>(); //Liste aller lebenden Piraten
         const int anzahlInsel = 5;
         static Meer meer = new Meer(anzahlInsel);
         static Pirat currentPirat;
+        static Lokation currentLokation;
         static Insel currentInsel;
         static Random rnd = new Random();
         public static Standort currentStandort;
         static string savePath = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\save.bin";
-        public enum Standort { Insel, Strand, Kneipe, Schiff, Friedhof, Huette };
-        public static string menue = "Sonstige Eingabe = zurück zum Hauptmenü"; //Satz in var ausgelagert, weil oft verwendet
 
         static void Main(string[] args)
         {
             uint uInput, uInput2; //Benutzereingaben
-            string standortBonusOption = string.Empty;
             Console.OutputEncoding = Encoding.UTF8; //notwendig für einige Animationen
 
             Animation.RPGPrint("Willkommen beim Piratenspiel! Yarr!");
-            Animation.SkullBones();
-            try
-            {
-                LoadGame();
-                currentPirat = piraten[0];
-                Console.WriteLine("Spielstand wurde geladen.");
-            }
-            catch
-            {
-                Console.WriteLine("Fehler! Spielstand konnte nicht geladen werden.\nNeues Spiel wird gestartet.");
-                currentPirat = CreatePirate(); //Startpirat
-            }
-            currentInsel = currentPirat.GetStandort(); //Startinsel
+            //Animation.SkullBones();
+            //try
+            //{
+            //    LoadGame();
+            //    currentPirat = piraten[0];
+            //    Console.WriteLine("Spielstand wurde geladen.");
+            //}
+            //catch
+            //{
+            //    Console.WriteLine("Fehler! Spielstand konnte nicht geladen werden.\nNeues Spiel wird gestartet.");
+            //    currentPirat = CreatePirate(); //Startpirat
+            //}
+            currentPirat = CreatePirate();
             Console.ReadLine();
-            Kneipe currentKneipe;
-            Strand currentStrand;
-            Schiff currentSchiff;
-            Friedhof currentFriedhof;
-            Huette currentHuette;
-            currentStandort = Standort.Insel;
+            //Kneipe currentKneipe;
+            //Strand currentStrand;
+            //Schiff currentSchiff;
+            //Friedhof currentFriedhof;
+            //Huette currentHuette;
+            //currentLokation = currentPirat.GetHeimat(); //Startinsel
+            currentInsel = currentPirat.GetHeimat();
+            //currentStandort = Standort.Insel;
 
             do //Hauptschleife, die das Spiel am Laufen hält
             {
-                currentKneipe = currentInsel.GetKneipe();
-                currentStrand = currentInsel.GetStrand();
-                currentFriedhof = currentInsel.GetFriedhof();
-                currentSchiff = currentInsel.GetSchiff();
-                currentHuette = currentInsel.GetHuette();
+                //currentKneipe = currentInsel.GetKneipe();
+                //currentStrand = currentInsel.GetStrand();
+                //currentFriedhof = currentInsel.GetFriedhof();
+                //currentSchiff = currentInsel.GetSchiff();
+                //currentHuette = currentInsel.GetHuette();
+                //currentStandort = currentPirat.GetStandort();
+                currentLokation = currentPirat.GetLokation();
                 Console.Clear();
-                Console.WriteLine("Du bist " + currentPirat.GetName() +
-                    "\nauf der Insel: " + currentInsel.GetBezeichnung());
-                if (currentKneipe.GetBesucher().Contains(currentPirat))
-                {
-                    currentStandort = Standort.Kneipe;
-                    Console.WriteLine("in der Kneipe: " + currentKneipe.GetBezeichnung());
-                    standortBonusOption = "Einen trinken!";
-                }
-                else if (currentStrand.GetBesucher().Contains(currentPirat))
-                {
-                    currentStandort = Standort.Strand;
-                    Console.WriteLine("am Strand: " + currentStrand.GetBezeichnung());
-                    standortBonusOption = "Nach Schätzen graben!";
-                }
-                else if (currentFriedhof.GetBesucher().Contains(currentPirat))
-                {
-                    currentStandort = Standort.Friedhof;
-                    Console.WriteLine("auf dem Friedhof: " + currentFriedhof.GetBezeichnung());
-                    standortBonusOption = "Gräber besichtigen.";
-                }
-                else if (currentSchiff.GetBesucher().Contains(currentPirat))
-                {
-                    currentStandort = Standort.Schiff;
-                    Console.WriteLine("auf dem Schiff: " + currentSchiff.GetBezeichnung());
-                    standortBonusOption = "Auf eine andere Insel fahren.";
-                }
-                else if (currentHuette.GetBesucher().Contains(currentPirat))
-                {
-                    currentStandort = Standort.Huette;
-                    Console.WriteLine("in der Hütte: " + currentHuette.GetBezeichnung());
-                    standortBonusOption = "Zimmer für die Nacht mieten";
-                }
-                else
-                    currentStandort = Standort.Insel;
+                Console.WriteLine(currentInsel.GetBezeichnung());
+                foreach(Pirat p in currentInsel.GetBesucher())
+                    Console.WriteLine(p.GetName());
 
-                Console.WriteLine("im Meer: " + meer.GetBezeichnung() +
-                  "\nDein Betrunkenheitslevel: " + currentPirat.GetBetrunkenheit() + "/5" +
-                  "\nDeine Taler: " + currentPirat.GetTaler());
+                Console.WriteLine(currentInsel.GetKneipe().GetBezeichnung());
+                foreach (Pirat p in currentInsel.GetKneipe().GetBesucher())
+                    Console.WriteLine(p.GetName());
 
-                Animation.RPGPrint("\nWas möchtest Du als nächstes tun?\n" +
-                    "1) Insel erkunden\n2) Piraten erstellen\n3) Piraten wechseln" +
-                    "\n4) Wer ist alles hier?");
+                Console.WriteLine(currentInsel.GetStrand().GetBezeichnung());
+                foreach (Pirat p in currentInsel.GetStrand().GetBesucher())
+                    Console.WriteLine(p.GetName());
 
-                if (currentStandort != Standort.Insel)
-                {
-                    Console.ForegroundColor = ConsoleColor.DarkCyan;
-                    Animation.RPGPrint("5) " + standortBonusOption);
-                    Console.ForegroundColor = ConsoleColor.Gray;
-                }
+                Console.WriteLine(currentInsel.GetSchiff().GetBezeichnung());
+                foreach (Pirat p in currentInsel.GetSchiff().GetBesucher())
+                    Console.WriteLine(p.GetName());
 
-                Animation.RPGPrint("Sonstige Eingabe = Programm beenden");
+                Output.ShowStats(currentPirat, meer, currentLokation);
+                Animation.RPGPrint("Was möchtest Du als nächstes tun?");
+                Output.ShowMenue(Output.mainMenueOptions);//, (int)currentStandort);
 
-                if (!InputCheck.CheckUInt(out uInput) || currentStandort != Standort.Insel && uInput > 5
-                    || currentStandort == Standort.Insel && uInput > 4)
+                if (!InputCheck.CheckUInt(out uInput) || !(currentLokation is Insel) && uInput > 5
+                    || (currentLokation is Insel) && uInput > 4)
                 {
                     SaveGame();
                     Animation.RPGPrint("Programm beendet. Der Spielstand wurde gespeichert.");
@@ -125,66 +99,70 @@ namespace MonkeyIsland1
                 switch (uInput)
                 {
                     case 1:
-                        Animation.RPGPrint("Wohin möchtest du gehen?\n" +
-                            "1) In die Kneipe\n2) An den Strand\n3) Auf das Schiff\n" +
-                            "4) Zum Friedhof\n5) Zur Hütte\n" + menue);
+                        Animation.RPGPrint("Wohin möchtest du gehen?");
+                        Output.ShowMenue(Output.exploreMenueOptions);
                         if (!InputCheck.CheckUInt(out uInput2) || uInput2 > 5)
                             continue;
+                        if (!(currentLokation is Insel)) //Pirat wechselt Standort, aber bleibt auf der Insel
+                            currentLokation.DelBesucher(currentPirat);
                         switch (uInput2)
                         {
                             case 1:
-                                if (currentStandort == Standort.Kneipe)
+                                if (currentLokation is Kneipe)
                                     Animation.RPGPrint("Du bist schon hier!");
                                 else
                                 {
-                                    currentKneipe.AddBesucher(currentPirat);
-                                    currentStandort = Standort.Kneipe;
-                                    Animation.RPGPrint($"Du bist zur Kneipe \"{currentKneipe.GetBezeichnung()}\" gegangen.");
+                                    currentLokation = currentInsel.GetKneipe();
+                                    //currentStandort = Standort.Kneipe;
+                                    Animation.RPGPrint($"Du bist zur Kneipe \"{currentLokation.GetBezeichnung()}\" gegangen.");
                                 }
                                 break;
                             case 2:
-                                if (currentStandort == Standort.Strand)
+                                if (currentLokation is Strand)
                                     Animation.RPGPrint("Du bist schon hier!");
                                 else
                                 {
-                                    currentStrand.AddBesucher(currentPirat);
-                                    currentStandort = Standort.Strand;
-                                    Animation.RPGPrint($"Du bist zum Strand \"{currentStrand.GetBezeichnung()}\" gegangen.");
+                                    currentLokation = currentInsel.GetStrand();
+                                    //currentStandort = Standort.Strand;
+                                    Animation.RPGPrint($"Du bist zum Strand \"{currentLokation.GetBezeichnung()}\" gegangen.");
                                 }
                                 break;
                             case 3:
-                                if (currentSchiff == null) // WiP
+                                if (currentInsel.GetSchiff() == null) // WiP
                                     Animation.RPGPrint("Das Schiff ist zur Zeit nicht da!");
-                                else if (currentStandort == Standort.Schiff)
+                                else if (currentLokation is Schiff)
                                     Animation.RPGPrint("Du bist schon auf dem Schiff!");
                                 else
                                 {
-                                    currentSchiff.AddBesucher(currentPirat);
-                                    currentStandort = Standort.Schiff;
-                                    Animation.RPGPrint($"Du bist auf das Schiff \"{currentSchiff.GetBezeichnung()}\" gegangen.");
+                                    currentLokation = currentInsel.GetSchiff();
+                                    //currentStandort = Standort.Schiff;
+                                    Animation.RPGPrint($"Du bist auf das Schiff \"{currentInsel.GetSchiff().GetBezeichnung()}\" gegangen.");
                                 }
                                 break;
                             case 4:
-                                if (currentStandort == Standort.Friedhof)
+                                if (currentLokation is Friedhof)
                                     Animation.RPGPrint("Du bist schon hier!");
                                 else
                                 {
-                                    currentFriedhof.AddBesucher(currentPirat);
-                                    currentStandort = Standort.Friedhof;
-                                    Animation.RPGPrint($"Du bist zum Friedhof \"{currentFriedhof.GetBezeichnung()}\" gegangen.");
+                                    currentLokation = currentInsel.GetFriedhof();
+                                    //currentStandort = Standort.Friedhof;
+                                    Animation.RPGPrint($"Du bist zum Friedhof \"{currentInsel.GetFriedhof().GetBezeichnung()}\" gegangen.");
                                 }
                                 break;
                             case 5:
-                                if (currentStandort == Standort.Huette)
+                                if (currentLokation is Huette)
                                     Animation.RPGPrint("Du bist schon hier!");
                                 else
-                                {
-                                    currentHuette.AddBesucher(currentPirat);
-                                    currentStandort = Standort.Huette;
-                                    Animation.RPGPrint($"Du bist zur Hütte \"{currentHuette.GetBezeichnung()}\" gegangen.");
+                                {;
+                                    currentLokation = currentInsel.GetHuette();
+                                    //currentStandort = Standort.Huette;
+                                    Animation.RPGPrint($"Du bist zur Hütte \"{currentInsel.GetHuette().GetBezeichnung()}\" gegangen.");
                                 }
                                 break;
                         }
+
+                        currentLokation.AddBesucher(currentPirat);
+                        currentPirat.SetLokation(currentLokation);
                         break;
 
                     case 2:
@@ -202,31 +180,16 @@ namespace MonkeyIsland1
                         break;
 
                     case 5:
-                        switch (currentStandort)
-                        {
-                            case Standort.Kneipe:
-                                currentInsel.GetKneipe().Event(ref currentPirat);
-                                break;
-
-                            case Standort.Strand:
-                                currentInsel.GetStrand().Event(ref currentPirat);
-                                break;
-
-                            case Standort.Friedhof:
-                                currentInsel.GetFriedhof().Event();
-                                break;
-
-                            case Standort.Schiff:
-                                currentInsel.GetSchiff().Event(meer, ref currentInsel, ref currentPirat);
-                                break;
-
-                            case Standort.Huette:
-                                currentInsel.GetHuette().Event(ref currentPirat);
-                                break;
-
-                            default:
-                                continue;
-                        }
+                        if (currentLokation is Kneipe)
+                            currentInsel.GetKneipe().Event(ref currentPirat);
+                        else if (currentLokation is Strand)
+                            currentInsel.GetStrand().Event(ref currentPirat);
+                        else if (currentLokation is Friedhof)
+                            currentInsel.GetFriedhof().Event();
+                        else if (currentLokation is Schiff)
+                            currentInsel.GetSchiff().Event(meer, ref currentInsel, ref currentPirat);
+                        else if (currentLokation is Huette)
+                            currentInsel.GetHuette().Event(ref currentPirat);
                         break;
                     default:
                         continue;
@@ -252,7 +215,7 @@ namespace MonkeyIsland1
                 else
                     break;
             }
-            neuerPirat = new Pirat(name, meer, startInsel);
+            neuerPirat = new Pirat(name, meer, startInsel, startInsel);
             piraten.Add(neuerPirat);
             startInsel.AddBesucher(neuerPirat);
             Animation.RPGPrint($"Der Pirat {neuerPirat.GetName()} wurde erstellt.");
@@ -272,7 +235,8 @@ namespace MonkeyIsland1
                     Environment.Exit(0);
                 }
                 currentPirat = CreatePirate();
-                currentInsel = currentPirat.GetStandort();
+                currentInsel = currentPirat.GetHeimat();
+                currentLokation = currentPirat.GetHeimat();
             }
             else
             {
@@ -280,7 +244,7 @@ namespace MonkeyIsland1
                 Animation.RPGPrint("Zu welchem Piraten willst Du wechseln?");
                 for (int i = 0; i < piraten.Count; i++)
                     Animation.RPGPrint($"{i + 1}) {piraten[i].GetName()}");
-                Animation.RPGPrint(menue);
+                Animation.RPGPrint(Output.back2mainMenue);
                 if (!InputCheck.CheckInt(out uinput) || uinput > piraten.Count)
                     return;
                 if (currentPirat == piraten[Convert.ToInt32(uinput) - 1])
@@ -292,7 +256,16 @@ namespace MonkeyIsland1
                 else
                 {
                     currentPirat = piraten[Convert.ToInt32(uinput) - 1];
-                    currentInsel = currentPirat.GetStandort();
+                    currentLokation = currentPirat.GetLokation();
+                    for (int i = 0; i < meer.GetInsel().Length; i++)
+                    {
+                        if (meer.GetInsel()[i].GetBesucher().Contains(currentPirat))
+                        {
+                            currentInsel = meer.GetInsel()[i];
+                            break;
+                        }
+                    }
+                    //currentInsel = (Insel)currentPirat.GetLokation();
                 }
             }
             Animation.RPGPrint($"Du bist jetzt \"{currentPirat.GetName()}\".");
