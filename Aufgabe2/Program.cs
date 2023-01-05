@@ -105,10 +105,14 @@ namespace MonkeyIsland1
                 Animation.RPGPrint("\nWas möchtest Du als nächstes tun?\n" +
                     "1) Insel erkunden\n2) Piraten erstellen\n3) Piraten wechseln" +
                     "\n4) Wer ist alles hier?");
-                Console.ForegroundColor = ConsoleColor.DarkCyan;
+
                 if (currentStandort != Standort.Insel)
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkCyan;
                     Animation.RPGPrint("5) " + standortBonusOption);
-                Console.ForegroundColor = ConsoleColor.Gray;
+                    Console.ForegroundColor = ConsoleColor.Gray;
+                }
+
                 Animation.RPGPrint("Sonstige Eingabe = Programm beenden");
 
                 if (!InputCheck.CheckUInt(out uInput) || currentStandort != Standort.Insel && uInput > 5
