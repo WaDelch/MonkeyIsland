@@ -30,5 +30,10 @@ namespace MonkeyIsland1.Controllers
             else
                 return false;
         }
+
+        public bool LokationCheck()
+        {
+            return false;
+        }
     }
 }

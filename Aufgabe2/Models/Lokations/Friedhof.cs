@@ -25,7 +25,7 @@ namespace MonkeyIsland1.Models.Lokations
             p.GetMeer().DelPirat(p);
         }
 
-        public override void Event()
+        public void Event()
         {
             Console.Clear();
             Animation.RPGPrint($"~~~=== {this.GetBezeichnung()} ===~~~");

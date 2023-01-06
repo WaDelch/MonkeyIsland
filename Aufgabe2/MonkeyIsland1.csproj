@@ -58,6 +58,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\FileHandler.cs" />
     <Compile Include="Views\Animation.cs" />
     <Compile Include="Models\Lokations\Friedhof.cs" />
     <Compile Include="Models\Lokations\Huette.cs" />

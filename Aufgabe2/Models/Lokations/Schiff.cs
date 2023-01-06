@@ -27,7 +27,7 @@ namespace MonkeyIsland1.Models.Lokations
             //Schiff fährt los
             Console.Clear();
             eInsel.DelBesucher(ePirat); //Pirat nicht mehr auf der alten Insel
-            eInsel.GetSchiff().DelBesucher(ePirat); //Pirat nicht mehr auf dem Schiff (Resultat aller derzeit implementierten, folgenden Aktionen)
+            eInsel.GetLokation<Schiff>().DelBesucher(ePirat); //Pirat nicht mehr auf dem Schiff (Resultat aller derzeit implementierten, folgenden Aktionen)
             Console.SetCursorPosition(0, 6);
             Console.WriteLine(eInsel.GetBezeichnung()); //Startinsel anzeigen
             Console.SetCursorPosition(99 - eInsel.GetBezeichnung().Length, 6);
@@ -99,7 +99,7 @@ namespace MonkeyIsland1.Models.Lokations
                         "die dich langsam verschlingt...");
                     Program.piraten.Remove(ePirat); //Pirat nicht mehr in der Liste der lebenden Piraten
 
-                    ePirat.GetHeimat().GetFriedhof().AddDauerbesucher(ePirat); //Pirat auf dem Friedhof seiner Heimatsinsel beerdigt
+                    ePirat.GetInsel().GetLokation<Friedhof>().AddDauerbesucher(ePirat); //Pirat auf dem Friedhof seiner Heimatsinsel beerdigt
                     Console.ReadLine();
                     Console.Clear();
                     Animation.RPGPrint("Du bist gestorben!");

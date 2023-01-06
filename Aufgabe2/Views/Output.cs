@@ -9,7 +9,7 @@ namespace MonkeyIsland1.Views
     internal static class Output
     {
         public static string[] mainMenueOptions = { "Insel erkunden", "Piraten erstellen", "Piraten wechseln", "Wer ist alles hier?" };
-        public static string[] bonusOptions = { "Nach Schätzen graben", "Einen trinken!", "Auf eine andere Insel fahren", "Gräber besichtigen", "Zimmer für dich Nacht mieten" };
+        public static string[] bonusOptions = { "Einen trinken!", "Nach Schätzen graben", "Auf eine andere Insel fahren", "Gräber besichtigen", "Zimmer für dich Nacht mieten" };
         public static string[] exploreMenueOptions = { "In die Kneipe", "An den Strand", "Auf das Schiff", "Zum Friedhof", "Zur Hütte" };
         public static string back2mainMenue = "Sonstige Eingabe = zurück zum Hauptmenü";
 

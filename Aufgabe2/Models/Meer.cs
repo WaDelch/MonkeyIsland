@@ -20,11 +20,11 @@ namespace MonkeyIsland1.Models
             {
                 insel[i] = new Insel();
                 insel[i].SetBezeichnung($"Insel{i + 1}");
-                insel[i].GetKneipe().SetBezeichnung($"Kneipe{i + 1}");
-                insel[i].GetStrand().SetBezeichnung($"Strand{i + 1}");
-                insel[i].GetSchiff().SetBezeichnung($"Schiff{i + 1}");
-                insel[i].GetFriedhof().SetBezeichnung($"Friedhof{i + 1}");
-                insel[i].GetHuette().SetBezeichnung($"Huette{i + 1}");
+                insel[i].GetLokation<Kneipe>().SetBezeichnung($"Kneipe{i + 1}");
+                insel[i].GetLokation<Strand>().SetBezeichnung($"Strand{i + 1}");
+                insel[i].GetLokation<Schiff>().SetBezeichnung($"Schiff{i + 1}");
+                insel[i].GetLokation<Friedhof>().SetBezeichnung($"Friedhof{i + 1}");
+                insel[i].GetLokation<Huette>().SetBezeichnung($"Huette{i + 1}");
             }
         }
 

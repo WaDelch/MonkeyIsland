@@ -8,7 +8,7 @@ namespace MonkeyIsland1.Models
         private string name;
         private Lokation lokation;
         //private Standort standort;
-        private Insel heimat;
+        private Insel insel;
         private int betrunkenheit;
         private int taler;
         private Meer meer;
@@ -18,7 +18,7 @@ namespace MonkeyIsland1.Models
             this.name = n;
             //this.standort = Standort.Insel;
             this.lokation = l;
-            this.heimat = i;
+            this.insel = i;
             this.meer = m;
             this.betrunkenheit = 0;
             if (n.ToLower() == "waldi")
@@ -57,14 +57,14 @@ namespace MonkeyIsland1.Models
         //    this.standort = s;
         //}
 
-        public Insel GetHeimat()
+        public Insel GetInsel()
         {
-            return this.heimat;
+            return this.insel;
         }
 
-        public void SetHeimat(Insel i)
+        public void SetInsel(Insel i)
         {
-            this.heimat = i;
+            this.insel = i;
         }
 
         public Meer GetMeer()

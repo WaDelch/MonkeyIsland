@@ -48,9 +48,9 @@ namespace MonkeyIsland1.Models.Lokations
             this.besucher.Remove(p);
         }
 
-        public virtual void Event()
-        {
+        //public virtual void Event()
+        //{
 
-        }
+        //}
     }
 }
