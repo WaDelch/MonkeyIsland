@@ -35,7 +35,7 @@ namespace MonkeyIsland1.Views
         public static void ShowStats(Pirat p, Meer m, Lokation l)
         {
             Console.WriteLine($"Name: {p.GetName()}\nMeer: {m.GetBezeichnung()}\nStandort: {l.GetBezeichnung()}\n" +
-                              $"Betrunkenheitslevel: {p.GetBetrunkenheit()}\nTaler: {p.GetTaler()}");
+                              $"Betrunkenheitslevel: {p.GetBetrunkenheit()}/5\nTaler: {p.GetTaler()}\n");
         }
     }
 }

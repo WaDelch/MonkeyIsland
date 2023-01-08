@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
+﻿using MonkeyIsland1.Controllers;
 using MonkeyIsland1.Models;
 using MonkeyIsland1.Models.Lokations;
-using MonkeyIsland1.Controllers;
 using MonkeyIsland1.Views;
-using System.Linq;
+using System;
+using System.Collections.Generic;
+using System.Text;
 
 /* ##################################
  * ### Textbasiertes Piratenspiel ###
@@ -16,18 +13,17 @@ using System.Linq;
 
 namespace MonkeyIsland1
 {
-    public enum Standort { Insel = -1, Strand, Kneipe, Schiff, Friedhof, Huette }; //Bonusoption ab Index >= 0
+    //public enum Standort { Insel = -1, Strand, Kneipe, Schiff, Friedhof, Huette }; //Bonusoption ab Index >= 0
 
     internal class Program
     {
         public static List<Pirat> piraten = new List<Pirat>(); //Liste aller lebenden Piraten
         const int anzahlInsel = 5;
-        static Meer meer = new Meer(anzahlInsel);
-        static Pirat currentPirat;
-        static Lokation currentLokation;
-        static Insel currentInsel;
-        static Random rnd = new Random();
-        public static Standort currentStandort;
+        public static Meer meer = new Meer(anzahlInsel);
+        public static Pirat currentPirat;
+        public static Lokation currentLokation;
+        public static Insel currentInsel;
+        public static Random rnd = new Random();
 
         static void Main(string[] args)
         {
@@ -47,15 +43,14 @@ namespace MonkeyIsland1
             //    Console.WriteLine("Fehler! Spielstand konnte nicht geladen werden.\nNeues Spiel wird gestartet.");
             //    currentPirat = CreatePirate(); //Startpirat
             //}
-            currentPirat = CreatePirate();
+            currentPirat = PirateHandler.CreatePirate();
             Console.ReadLine();
             //Kneipe currentKneipe;
             //Strand currentStrand;
             //Schiff currentSchiff;
             //Friedhof currentFriedhof;
             //Huette currentHuette;
-            //currentLokation = currentPirat.GetHeimat(); //Startinsel
-            currentInsel = currentPirat.GetInsel();
+
             //currentStandort = Standort.Insel;
 
             do //Hauptschleife, die das Spiel am Laufen hält
@@ -66,25 +61,33 @@ namespace MonkeyIsland1
                 //currentSchiff = currentInsel.GetSchiff();
                 //currentHuette = currentInsel.GetHuette();
                 //currentStandort = currentPirat.GetStandort();
-
+                currentInsel = currentPirat.GetInsel();
                 currentLokation = currentPirat.GetLokation();
                 Console.Clear();
 
-                //Console.WriteLine(currentInsel.GetBezeichnung());
-                //foreach (Pirat p in currentInsel.GetBesucher())
-                //    Console.WriteLine(p.GetName());
+                Console.WriteLine(currentInsel.GetBezeichnung());
+                foreach (Pirat p in currentInsel.GetBesucher())
+                    Console.WriteLine(p.GetName());
 
-                //Console.WriteLine(currentInsel.GetLokation<Kneipe>().GetBezeichnung());
-                //foreach (Pirat p in currentInsel.GetLokation<Kneipe>().GetBesucher())
-                //    Console.WriteLine(p.GetName());
+                Console.WriteLine(currentInsel.GetLokation<Kneipe>().GetBezeichnung());
+                foreach (Pirat p in currentInsel.GetLokation<Kneipe>().GetBesucher())
+                    Console.WriteLine(p.GetName());
 
-                //Console.WriteLine(currentInsel.GetLokation<Strand>().GetBezeichnung());
-                //foreach (Pirat p in currentInsel.GetLokation<Strand>().GetBesucher())
-                //    Console.WriteLine(p.GetName());
+                Console.WriteLine(currentInsel.GetLokation<Strand>().GetBezeichnung());
+                foreach (Pirat p in currentInsel.GetLokation<Strand>().GetBesucher())
+                    Console.WriteLine(p.GetName());
 
-                //Console.WriteLine(currentInsel.GetLokation<Schiff>().GetBezeichnung());
-                //foreach (Pirat p in currentInsel.GetLokation<Schiff>().GetBesucher())
-                //    Console.WriteLine(p.GetName());
+                Console.WriteLine(currentInsel.GetLokation<Schiff>().GetBezeichnung());
+                foreach (Pirat p in currentInsel.GetLokation<Schiff>().GetBesucher())
+                    Console.WriteLine(p.GetName());
+
+                Console.WriteLine(currentInsel.GetLokation<Friedhof>().GetBezeichnung());
+                foreach (Pirat p in currentInsel.GetLokation<Friedhof>().GetBesucher())
+                    Console.WriteLine(p.GetName());
+
+                Console.WriteLine(currentInsel.GetLokation<Huette>().GetBezeichnung());
+                foreach (Pirat p in currentInsel.GetLokation<Huette>().GetBesucher())
+                    Console.WriteLine(p.GetName());
 
                 Output.ShowStats(currentPirat, meer, currentLokation);
                 Animation.RPGPrint("Was möchtest Du als nächstes tun?");
@@ -104,14 +107,15 @@ namespace MonkeyIsland1
                         Output.ShowMenue(Output.exploreMenueOptions);
                         if (!InputCheck.CheckUInt(out uInput2) || uInput2 > Output.exploreMenueOptions.Length)
                             continue;
-                        if (!(currentLokation is Insel)) //Pirat wechselt Standort, aber bleibt auf der Insel
-                            currentLokation.DelBesucher(currentPirat);
+                        //if (!(currentLokation is Insel)) //Pirat wechselt Standort, aber bleibt auf der Insel
+                        //    currentLokation.DelBesucher(currentPirat);
 
                         if (currentInsel.standorte[uInput2 - 1].GetType() == currentLokation.GetType())
                             Animation.RPGPrint("Du bist schon hier!");
                         else
                         {
                             currentLokation = currentInsel.standorte[uInput2 - 1];
+                            currentPirat.SetLokation(currentLokation);
                             Animation.RPGPrint($"Du hast den Standort gewechselt zu: {currentLokation.GetBezeichnung()}");
                         }
 
@@ -171,16 +175,16 @@ namespace MonkeyIsland1
                         //        break;
                         //}
 
-                        currentLokation.AddBesucher(currentPirat);
-                        currentPirat.SetLokation(currentLokation);
+                        //currentLokation.AddBesucher(currentPirat);
+
                         break;
 
                     case 2:
-                        CreatePirate();
+                        PirateHandler.CreatePirate();
                         break;
 
                     case 3:
-                        ChangePirate();
+                        PirateHandler.ChangePirate();
                         continue;
 
                     case 4:
@@ -206,81 +210,6 @@ namespace MonkeyIsland1
                 }
                 Console.ReadLine();
             } while (true);
-        }
-
-        public static Pirat CreatePirate()
-        {
-            string name;
-            Pirat neuerPirat;
-            Insel startInsel = meer.GetInsel()[rnd.Next(0, meer.GetInsel().Length)]; //zufällige Startinsel
-            while (true)
-            {
-                Animation.RPGPrint("\nWie soll der Pirat heißen?");
-                name = Console.ReadLine();
-                if (!InputCheck.CheckAlphaNum(name))
-                {
-                    Console.WriteLine("Der Name darf nur Zahlen und Buchstaben enthalten!");
-                    Console.ReadLine();
-                    Console.Clear();
-                }
-                else
-                    break;
-            }
-            neuerPirat = new Pirat(name, meer, startInsel, startInsel);
-            piraten.Add(neuerPirat);
-            startInsel.AddBesucher(neuerPirat);
-            Animation.RPGPrint($"Der Pirat {neuerPirat.GetName()} wurde erstellt.");
-            return neuerPirat;
-        }
-
-        public static void ChangePirate()
-        {
-            if (piraten.Count < 1)
-            {
-                Animation.RPGPrint("Es gibt keine lebenden Piraten mehr!\n" +
-                    "Willst du einen neuen Piraten anlegen? (j = ja)" +
-                    "\nSonstige Eingabe = Programm beenden");
-                if (Console.ReadKey().KeyChar != 'j')
-                {
-                    Animation.RPGPrint("Programm beendet.");
-                    Environment.Exit(0);
-                }
-                currentPirat = CreatePirate();
-                currentInsel = currentPirat.GetInsel();
-                currentLokation = currentPirat.GetInsel();
-            }
-            else
-            {
-                int uinput;
-                Animation.RPGPrint("Zu welchem Piraten willst Du wechseln?");
-                for (int i = 0; i < piraten.Count; i++)
-                    Animation.RPGPrint($"{i + 1}) {piraten[i].GetName()}");
-                Animation.RPGPrint(Output.back2mainMenue);
-                if (!InputCheck.CheckInt(out uinput) || uinput > piraten.Count)
-                    return;
-                if (currentPirat == piraten[Convert.ToInt32(uinput) - 1])
-                {
-                    Animation.RPGPrint("Das bist du schon!");
-                    Console.ReadLine();
-                    return;
-                }
-                else
-                {
-                    currentPirat = piraten[Convert.ToInt32(uinput) - 1];
-                    currentLokation = currentPirat.GetLokation();
-                    for (int i = 0; i < meer.GetInsel().Length; i++)
-                    {
-                        if (meer.GetInsel()[i].GetBesucher().Contains(currentPirat))
-                        {
-                            currentInsel = meer.GetInsel()[i];
-                            break;
-                        }
-                    }
-                    //currentInsel = (Insel)currentPirat.GetLokation();
-                }
-            }
-            Animation.RPGPrint($"Du bist jetzt \"{currentPirat.GetName()}\".");
-            Console.ReadLine();
         }
     }
 }

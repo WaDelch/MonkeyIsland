@@ -36,10 +36,6 @@ namespace MonkeyIsland1.Models.Lokations
 
         public void AddBesucher(Pirat p)
         {
-            //Pirat wechselt Standort -> Pirat aus der Liste des vorherigen Standortes löschen
-            //if (this.besucher.Contains(p))
-            //        this.besucher.Remove(p);
-            //Pirat dem neuen Standort hinzufügen
             this.besucher.Add(p);
         }
 

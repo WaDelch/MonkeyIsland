@@ -86,7 +86,7 @@ namespace MonkeyIsland1.Views
                 //Schiffsrumpf zeichnen
                 for (int i = 1; i < 4; i++)
                 {
-                    Console.SetCursorPosition(8 + k, 9 + i);
+                    Console.SetCursorPosition(8 + k, i + 9);
                     Console.WriteLine(shipParts[i]);
                 }
                 Console.SetCursorPosition(8 + k, 12); //nachfolgendes Wasser zeichnen

@@ -34,7 +34,7 @@ namespace MonkeyIsland1.Models.Lokations
             eInsel = eMeer.GetInsel()[uInput - 1]; //wechsle Insel
             Console.WriteLine(eInsel.GetBezeichnung()); //Zielinsel anzeigen
 
-            randomZahl = rnd.Next(1, 101) + 5 * ePirat.GetBetrunkenheit(); //Chance vom Schiff zu fallen
+            randomZahl = rnd.Next(1, 101) + 5 * ePirat.GetBetrunkenheit(); //Chance vom Schiff zu fallen, +5% pro Betrunkenheitslevel
             if (randomZahl > 95) //Pirat vom Schiff gefallen
             {
                 Animation.Ship(true); //Schiffsanimation bricht ab, weil der Pirat vom Schiff gefallen ist
@@ -116,22 +116,21 @@ namespace MonkeyIsland1.Models.Lokations
                     }
                     if (uInput2 == 1)
                     {
-                        Program.ChangePirate();
+                        PirateHandler.ChangePirate();
                         return;
                     }
                     else if (uInput2 == 2)
                     {
-                        Program.CreatePirate();
-                        Program.ChangePirate();
+                        PirateHandler.CreatePirate();
+                        PirateHandler.ChangePirate();
                         return;
                     }
                 }
                 else //Pirat konnte sich retten
                 {
                     eInsel = eMeer.GetInsel()[rnd.Next(0, eMeer.GetInsel().Length)]; //auf zufällige Insel gerettet
-                    eInsel.AddBesucher(ePirat);
-                    ePirat.SetLokation(eInsel);
-                    currentStandort = Standort.Strand;
+                    ePirat.SetInsel(eInsel);
+                    ePirat.SetLokation(eInsel.GetLokation<Strand>()); //Pirat konnte sich an den Inselstrand retten
                     Console.Clear();
                     Animation.RPGPrint("...\n....\n.....", 150);
                     Animation.RPGPrint("Das Rauschen des eMeeres weckt dich auf.\nEs dauert einen Moment\n" +
@@ -142,9 +141,7 @@ namespace MonkeyIsland1.Models.Lokations
                 }
             }
             //sichere Überfahrt
-            eInsel.AddBesucher(ePirat); //Pirat auf neuer Insel
-            ePirat.SetLokation(eInsel); //Pirat hat neue Insel als Standort 
-            currentStandort = Standort.Insel;
+            ePirat.SetInsel(eInsel); //Pirat hat neue Insel als Standort 
             Animation.Ship();
             Console.SetCursorPosition(0, 0);
             Animation.RPGPrint($"Du bist zur Insel \"{eInsel.GetBezeichnung()}\" gefahren.");

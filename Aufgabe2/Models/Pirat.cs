@@ -39,12 +39,18 @@ namespace MonkeyIsland1.Models
 
         public Lokation GetLokation()
         {
-            return this.lokation;
+            if (this.lokation != null)
+                return this.lokation;
+            else
+                return this.insel;
         }
 
         public void SetLokation(Lokation l)
         {
-            this.lokation = l;
+            if (this.lokation != null) //Pirat verlässt vorherigen Standort, falls vorhanden.
+                this.lokation.DelBesucher(this);
+            this.lokation = l; //Pirat wechselt zu neuem Standort
+            this.lokation.AddBesucher(this); //Pirat wird in neuem Standort aufgenommen
         }
 
         //public Standort GetStandort()
@@ -64,7 +70,11 @@ namespace MonkeyIsland1.Models
 
         public void SetInsel(Insel i)
         {
-            this.insel = i;
+            this.insel.DelBesucher(this);   //Pirat ist nicht mehr auf der vorherigen Insel
+            this.lokation.DelBesucher(this);//Pirat ist nicht mehr auf vorherigem Standort    
+            this.insel = i;                 //Pirat wechselt zu neuer Insel
+            this.insel.AddBesucher(this);   //Pirat wird auf neuer Insel aufgenommen
+            this.lokation = null;           //Pirat befindet sich noch an keinem anderen Standort
         }
 
         public Meer GetMeer()
@@ -81,6 +91,7 @@ namespace MonkeyIsland1.Models
         {
             return this.betrunkenheit;
         }
+
         public void SetBetrunkenheit(int i)
         {
             this.betrunkenheit = i;

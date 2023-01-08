@@ -15,7 +15,7 @@ namespace MonkeyIsland1.Models.Lokations
         //                                      //Jedes Schiff hat also einen festen Heimathafen, von dem es voll abhängig ist
         //private Huette huette = new Huette();
 
-        public T GetLokation<T>() where T:Lokation //generische Get-Methode ersetzt einzelne Methoden und ist skalierbar
+        public T GetLokation<T>() where T:Lokation //generische Get-Methode ersetzt einzelne Methoden und ist leichter skalierbar
         {
             foreach (var item in this.standorte)
                 if (item is T)
@@ -27,11 +27,6 @@ namespace MonkeyIsland1.Models.Lokations
         {
             this.standorte.SetValue(l, Array.IndexOf(standorte, GetLokation<T>()));
         }
-
-        //public int GetLokIndex<T>() where T:Lokation
-        //{
-        //    return Array.IndexOf(standorte, )
-        //}
 
         //public Strand GetStrand()
         //{
