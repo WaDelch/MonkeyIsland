@@ -14,17 +14,17 @@ namespace MonkeyIsland1.Models.Locations
         public override void Event(Transporter t)
         {
             string[] shopList = { "Schwert", "Augenklappe", "Papagei", "Holzbein" };
-            int[] priceList = { 150, 15, 50, 100 };
+            int[] priceList = { 150, 15, 75, 100 };
 
-            while (true)
+            do
             {
                 Console.Clear();
                 Animation.RPGPrint($"~~~=== {this.GetDescription()} ===~~~");
                 Animation.RPGPrint("Welche Gegenstände willst Du kaufen?");
-                Output.ShowMenue(shopList);
+                Output.ShowShopList(shopList, priceList);
                 Console.ReadLine();
                 break;
-            }
+            } while (Console.ReadKey().KeyChar == 'j');
         }
     }
 }

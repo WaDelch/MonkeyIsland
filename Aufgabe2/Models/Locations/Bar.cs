@@ -7,12 +7,11 @@ namespace MonkeyIsland1.Models.Locations
     [Serializable]
     internal class Bar : Location
     {
-        string[] drinksMenue = { "Wasser", "Bier", "Grog", "Selbstgebraute Hausmarke" };
+        string[] drinksList = { "Wasser", "Bier", "Grog", "Selbstgebraute Hausmarke" };
         int[] drinksPrices = { 1, 3, 4, 6 };     
 
         public override void Event(Transporter t)
         {
-            char uInput2 = 'j';
             do
             {
                 Console.Clear();
@@ -24,10 +23,9 @@ namespace MonkeyIsland1.Models.Locations
                     break;
                 }
                 Animation.RPGPrint("Hier ist die Getränkeliste: ");
-                for (int i = 0; i < drinksMenue.Length; i++)
-                    Animation.RPGPrint($"{i + 1}) {drinksMenue[i]} - {drinksPrices[i]} Taler");
-                Animation.RPGPrint(Output.back2mainMenue + "\nDu hast zur Zeit " + t.pirate.GetCoins() + " Taler.\nWas möchtest du bestellen?");
-                if (!InputCheck.CheckUInt(out uInput) || uInput > drinksMenue.Length)
+                Output.ShowShopList(drinksList, drinksPrices);
+                Animation.RPGPrint("\nDu hast zur Zeit " + t.pirate.GetCoins() + " Taler.\nWas möchtest du bestellen?");
+                if (!InputCheck.CheckUInt(out uInput) || uInput > drinksList.Length)
                     break;
 
                 if (drinksPrices[uInput - 1] > t.pirate.GetCoins())
@@ -43,7 +41,7 @@ namespace MonkeyIsland1.Models.Locations
                     continue;
                 }
                 t.pirate.SetCoins(t.pirate.GetCoins() - drinksPrices[uInput - 1]);
-                Animation.RPGPrint($"Du hebst einen Becher \"{drinksMenue[uInput - 1]}\"!");
+                Animation.RPGPrint($"Du hebst einen Becher \"{drinksList[uInput - 1]}\"!");
                 if (uInput != 1) // Wasser macht nicht betrunken
                 {
                     Animation.Drink(false);
@@ -53,8 +51,7 @@ namespace MonkeyIsland1.Models.Locations
                 else
                     Animation.Drink();
                 Animation.RPGPrint("Willst du weitertrinken? (j = ja)\n" + Output.back2mainMenue);
-                uInput2 = Console.ReadKey().KeyChar;
-            } while (uInput2 == 'j');
+            } while (Console.ReadKey().KeyChar == 'j');
         }
 
     }

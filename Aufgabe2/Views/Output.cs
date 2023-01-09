@@ -31,6 +31,13 @@ namespace MonkeyIsland1.Views
                 Animation.RPGPrint(back2mainMenue);
         }
 
+        public static void ShowShopList(string[] items, int[] prices)
+        {
+            for (int i = 0; i < items.Length; i++)
+                Animation.RPGPrint($"{i + 1}) {items[i]} - {prices[i]} Taler");
+            Console.WriteLine(back2mainMenue);
+        }
+
         public static void ShowStats(Pirate p, Sea m, Location l)
         {
             string tLine = new String('-', 50 + p.GetName().Length);
