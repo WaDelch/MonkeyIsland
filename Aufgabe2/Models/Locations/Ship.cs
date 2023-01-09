@@ -60,7 +60,7 @@ namespace MonkeyIsland1.Models.Locations
                             "Deine Körpertemperatur und Überlebenschance sinkt!");
                         Console.ReadLine();
                         drownChance += 5;
-                        return;
+                        continue;
                     }
                     switch (uInput2)
                     {
@@ -99,6 +99,8 @@ namespace MonkeyIsland1.Models.Locations
                         "die dich langsam verschlingt...");
                     Program.pirates.Remove(t.pirate); //Pirat nicht mehr in der Liste der lebenden Piraten
 
+                    Animation.RPGPrint($"Du wurdest auf dem Friedhof \"{t.pirate.GetIsle().GetLocation<Graveyard>().GetDescription()}\"" +
+                                       $"der Insel \"{t.pirate.GetIsle().GetDescription()}\" beerdigt.");
                     t.pirate.GetIsle().GetLocation<Graveyard>().AddPermanentVisitor(t.pirate); //Pirat auf dem Friedhof der zuletzt besuchten Insel beerdigt
                     Console.ReadLine();
                     Console.Clear();
@@ -111,13 +113,14 @@ namespace MonkeyIsland1.Models.Locations
                         "Sonstige Eingabe = Programm beenden");
                     if (!InputCheck.CheckUInt(out uInput2) || uInput2 > 2)
                     {
-                        Animation.RPGPrint("Programm beendet.");
-                        return;
+                        FileHandler.SaveGame();
+                        Animation.RPGPrint(Output.closeAndSaveGame);
+                        Environment.Exit(0);
                     }
                     if (uInput2 == 1)
                     {
                         PirateHandler.ChangePirate();
-                        return;
+                        return;                        
                     }
                     else if (uInput2 == 2)
                     {
@@ -133,7 +136,7 @@ namespace MonkeyIsland1.Models.Locations
                     t.pirate.SetLocation(t.isle.GetLocation<Beach>()); //Pirat konnte sich an den Inselstrand retten
                     Console.Clear();
                     Animation.RPGPrint("...\n....\n.....", 150);
-                    Animation.RPGPrint("Das Rauschen des t.seaes weckt dich auf.\nEs dauert einen Moment\n" +
+                    Animation.RPGPrint("Das Rauschen des Meeres weckt dich auf.\nEs dauert einen Moment\n" +
                         "bis du zu dir kommst und dich orientierst...\n" +
                         "Schließlich stellst du fest, dass du an Land gespült wurdest!\n" +
                         $"Du befindest dich jetzt auf dem Strand der Insel \"{t.isle.GetDescription()}\"");
@@ -145,8 +148,6 @@ namespace MonkeyIsland1.Models.Locations
             Animation.Ship();
             Console.SetCursorPosition(0, 0);
             Animation.RPGPrint($"Du bist zur Insel \"{t.isle.GetDescription()}\" gefahren.");
-            return;
         }
-
     }
 }

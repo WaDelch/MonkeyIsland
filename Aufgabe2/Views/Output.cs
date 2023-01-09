@@ -10,6 +10,7 @@ namespace MonkeyIsland1.Views
         public static string[] bonusOptions = { "Einen trinken!", "Nach Schätzen graben", "Auf eine andere Insel fahren", "Gräber besichtigen", "Zimmer für dich Nacht mieten" };
         public static string[] exploreMenueOptions = { "In die Kneipe", "An den Strand", "Auf das Schiff", "Zum Friedhof", "Zur Hütte" };
         public static string back2mainMenue = "Sonstige Eingabe = zurück zum Hauptmenü";
+        public static string closeAndSaveGame = "Programm beendet. Der Spielstand wurde gespeichert.";
 
         public static void ShowMenue(string[] options, int bonusIndex = -1)
         {
@@ -45,6 +46,7 @@ namespace MonkeyIsland1.Views
                 Console.WriteLine("|");
                 Console.WriteLine(tLine);
             }
+            Console.WriteLine();
 
             //Console.WriteLine($"Name: {p.GetName()}\nMeer: {m.GetBezeichnung()}\nStandort: {l.GetBezeichnung()}\n" +
             //                  $"Betrunkenheitslevel: {p.GetBetrunkenheit()}/5\nTaler: {p.GetTaler()}\n");

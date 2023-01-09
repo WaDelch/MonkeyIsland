@@ -82,7 +82,7 @@ namespace MonkeyIsland1
                 if (!InputCheck.CheckUInt(out uInput) || !(currentLocation is Isle) && uInput > 5
                     || (currentLocation is Isle) && uInput > 4)
                 {
-                    FileHandler.SaveGame(pirates);
+                    FileHandler.SaveGame();
                     Animation.RPGPrint("Programm beendet. Der Spielstand wurde gespeichert.");
                     return;
                 }
