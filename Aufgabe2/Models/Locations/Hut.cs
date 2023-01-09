@@ -9,29 +9,29 @@ namespace MonkeyIsland1.Models.Locations
     {
         public override void Event(Transporter t)
         {
-            int preisProNacht = 8;
+            int pricePerNight = 8;
             while (true)
             {
                 Console.Clear();
                 Animation.RPGPrint($"~~~=== {this.GetDescription()} ===~~~");
-                if (t.pirate.GetCoins() < preisProNacht)
+                if (t.pirate.GetCoins() < pricePerNight)
                 {
                     Animation.RPGPrint("Du hast nicht genug Taler, um ein Zimmer zu mieten!\nDu wurdest vor die Tür geworfen!");
                     Console.ReadLine();
                     break;
                 }
-                Animation.RPGPrint($"Du hast zur Zeit {t.pirate.GetCoins()} Taler.\nEin Zimmer kostet {preisProNacht} Taler die Nacht.\nWillst du ein Zimmer mieten? (j = ja)\n" + Output.back2mainMenue);
+                Animation.RPGPrint($"Du hast zur Zeit {t.pirate.GetCoins()} Taler.\nEin Zimmer kostet {pricePerNight} Taler die Nacht.\nWillst du ein Zimmer mieten? (j = ja)\n" + Output.back2mainMenue);
                 if (Console.ReadKey().KeyChar != 'j')
                     break;
                 Animation.RPGPrint("\nFür wie viele Nächte willst du übernachten? (max = 5)\n" + Output.back2mainMenue);
                 if (!InputCheck.CheckUInt(out uInput) || uInput > 5)
                     break;
-                else if (t.pirate.GetCoins() < uInput * preisProNacht)
+                else if (t.pirate.GetCoins() < uInput * pricePerNight)
                 {
                     Animation.RPGPrint("Du hast nicht genug Taler für so viele Nächte!");
                     continue;
                 }
-                t.pirate.SetCoins(t.pirate.GetCoins() - (int)(uInput) * preisProNacht);
+                t.pirate.SetCoins(t.pirate.GetCoins() - (int)(uInput) * pricePerNight);
 
                 Animation.Sleep();
 

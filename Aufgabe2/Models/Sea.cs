@@ -25,6 +25,7 @@ namespace MonkeyIsland1.Models
                 isles[i].GetLocation<Ship>().SetDescription($"Schiff{i + 1}");
                 isles[i].GetLocation<Graveyard>().SetDescription($"Friedhof{i + 1}");
                 isles[i].GetLocation<Hut>().SetDescription($"Huette{i + 1}");
+                isles[i].GetLocation<Shop>().SetDescription($"Shop{i + 1}");
             }
         }
 

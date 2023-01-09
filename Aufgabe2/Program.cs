@@ -13,7 +13,7 @@ using System.Text;
 
 namespace MonkeyIsland1
 {
-    //public enum Standort { Insel = -1, Strand, Kneipe, Schiff, Friedhof, Huette }; //Bonusoption ab Index >= 0
+    public enum Items { Sword, EyePatch, Parrot, WoodenLeg }
 
     internal class Program
     {
@@ -79,8 +79,8 @@ namespace MonkeyIsland1
                 Animation.RPGPrint("Was möchtest Du als nächstes tun?");
                 Output.ShowMenue(Output.mainMenueOptions, Array.IndexOf(currentIsle.locations, currentLocation));
 
-                if (!InputCheck.CheckUInt(out uInput) || !(currentLocation is Isle) && uInput > 5
-                    || (currentLocation is Isle) && uInput > 4)
+                if (!InputCheck.CheckUInt(out uInput) || !(currentLocation is Isle) && uInput > Output.exploreMenueOptions.Length
+                    || (currentLocation is Isle) && uInput > Output.exploreMenueOptions.Length - 1)
                 {
                     FileHandler.SaveGame();
                     Animation.RPGPrint("Programm beendet. Der Spielstand wurde gespeichert.");
