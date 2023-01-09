@@ -1,8 +1,6 @@
-﻿using System;
-using System.Linq;
-using static MonkeyIsland1.Program;
-using MonkeyIsland1.Models;
-using MonkeyIsland1.Models.Lokations;
+﻿using MonkeyIsland1.Models;
+using MonkeyIsland1.Models.Locations;
+using System;
 
 namespace MonkeyIsland1.Views
 {
@@ -34,8 +32,22 @@ namespace MonkeyIsland1.Views
 
         public static void ShowStats(Pirat p, Meer m, Lokation l)
         {
-            Console.WriteLine($"Name: {p.GetName()}\nMeer: {m.GetBezeichnung()}\nStandort: {l.GetBezeichnung()}\n" +
-                              $"Betrunkenheitslevel: {p.GetBetrunkenheit()}/5\nTaler: {p.GetTaler()}\n");
+            string tLine = new String('-', 50 + p.GetName().Length);
+            string[] statNames = { "Name", "Meer", "Standort", "Betrunkenheitslevel", "Taler" };
+            string[] stats = { p.GetName(), m.GetBezeichnung(), l.GetBezeichnung(), p.GetBetrunkenheit().ToString() + "/5", p.GetTaler().ToString() };
+            Console.WriteLine(tLine);
+            for (int i = 0; i < stats.Length; i++)
+            {
+                Console.Write($"| {statNames[i]}");
+                Console.CursorLeft += 21 - statNames[i].Length;
+                Console.Write($": {stats[i]}");
+                Console.CursorLeft = tLine.Length - 1;
+                Console.WriteLine("|");
+                Console.WriteLine(tLine);
+            }
+
+            //Console.WriteLine($"Name: {p.GetName()}\nMeer: {m.GetBezeichnung()}\nStandort: {l.GetBezeichnung()}\n" +
+            //                  $"Betrunkenheitslevel: {p.GetBetrunkenheit()}/5\nTaler: {p.GetTaler()}\n");
         }
     }
 }

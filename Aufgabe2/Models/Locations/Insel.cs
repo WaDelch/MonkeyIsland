@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MonkeyIsland1.Models.Lokations
+namespace MonkeyIsland1.Models.Locations
 {
     [Serializable]
     internal class Insel : Lokation

@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace MonkeyIsland1.Controllers
 {
-    internal class InputCheck
+    internal static class InputCheck
     {
         public static bool CheckInt(out int uinput)
         {
@@ -29,11 +29,6 @@ namespace MonkeyIsland1.Controllers
                 return true;
             else
                 return false;
-        }
-
-        public bool LokationCheck()
-        {
-            return false;
         }
     }
 }

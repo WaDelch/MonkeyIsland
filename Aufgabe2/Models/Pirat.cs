@@ -1,4 +1,4 @@
-﻿using MonkeyIsland1.Models.Lokations;
+﻿using MonkeyIsland1.Models.Locations;
 using System;
 namespace MonkeyIsland1.Models
 {
@@ -72,7 +72,7 @@ namespace MonkeyIsland1.Models
         {
             this.insel.DelBesucher(this);   //Pirat ist nicht mehr auf der vorherigen Insel
             this.lokation.DelBesucher(this);//Pirat ist nicht mehr auf vorherigem Standort    
-            this.insel = i;                 //Pirat wechselt zu neuer Insel
+            this.insel = i;                 //Pirat wechselt zur neuen Insel
             this.insel.AddBesucher(this);   //Pirat wird auf neuer Insel aufgenommen
             this.lokation = null;           //Pirat befindet sich noch an keinem anderen Standort
         }

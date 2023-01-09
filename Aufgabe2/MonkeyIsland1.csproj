@@ -58,6 +58,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\Transporter.cs" />
     <Compile Include="Models\FileHandler.cs" />
     <Compile Include="Models\PirateHandler.cs" />
     <Compile Include="Views\Animation.cs" />

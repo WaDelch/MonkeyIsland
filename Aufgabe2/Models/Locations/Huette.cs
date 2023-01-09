@@ -2,47 +2,47 @@
 using MonkeyIsland1.Controllers;
 using MonkeyIsland1.Views;
 
-namespace MonkeyIsland1.Models.Lokations
+namespace MonkeyIsland1.Models.Locations
 {
     [Serializable]
     internal class Huette : Lokation
     {
-        public void Event(ref Pirat ePirat)
+        public override void Event(Transporter t)
         {
             int preisProNacht = 8;
             while (true)
             {
                 Console.Clear();
                 Animation.RPGPrint($"~~~=== {this.GetBezeichnung()} ===~~~");
-                if (ePirat.GetTaler() < preisProNacht)
+                if (t.pirat.GetTaler() < preisProNacht)
                 {
                     Animation.RPGPrint("Du hast nicht genug Taler, um ein Zimmer zu mieten!\nDu wurdest vor die Tür geworfen!");
                     Console.ReadLine();
                     break;
                 }
-                Animation.RPGPrint($"Du hast zur Zeit {ePirat.GetTaler()} Taler.\nEin Zimmer kostet {preisProNacht} Taler die Nacht.\nWillst du ein Zimmer mieten? (j = ja)\n" + Output.back2mainMenue);
+                Animation.RPGPrint($"Du hast zur Zeit {t.pirat.GetTaler()} Taler.\nEin Zimmer kostet {preisProNacht} Taler die Nacht.\nWillst du ein Zimmer mieten? (j = ja)\n" + Output.back2mainMenue);
                 if (Console.ReadKey().KeyChar != 'j')
                     break;
                 Animation.RPGPrint("\nFür wie viele Nächte willst du übernachten? (max = 5)\n" + Output.back2mainMenue);
                 if (!InputCheck.CheckUInt(out uInput) || uInput > 5)
                     break;
-                else if (ePirat.GetTaler() < uInput * preisProNacht)
+                else if (t.pirat.GetTaler() < uInput * preisProNacht)
                 {
                     Animation.RPGPrint("Du hast nicht genug Taler für so viele Nächte!");
                     continue;
                 }
-                ePirat.SetTaler(ePirat.GetTaler() - (int)(uInput) * preisProNacht);
+                t.pirat.SetTaler(t.pirat.GetTaler() - (int)(uInput) * preisProNacht);
 
                 Animation.Sleep();
 
-                if (ePirat.GetBetrunkenheit() > 0)
+                if (t.pirat.GetBetrunkenheit() > 0)
                 {
                     for (int i = 0; i < uInput; i++)
                         //Betrunkenheitslevel sinkt um 1-3 Punkte pro Nacht
-                        ePirat.SetBetrunkenheit(ePirat.GetBetrunkenheit() - rnd.Next(1, 4));
-                    if (ePirat.GetBetrunkenheit() < 0)
-                        ePirat.SetBetrunkenheit(0);
-                    Animation.RPGPrint($"Dein Betrunkenheitslevel ist auf {ePirat.GetBetrunkenheit()} gesunken.");
+                        t.pirat.SetBetrunkenheit(t.pirat.GetBetrunkenheit() - rnd.Next(1, 4));
+                    if (t.pirat.GetBetrunkenheit() < 0)
+                        t.pirat.SetBetrunkenheit(0);
+                    Animation.RPGPrint($"Dein Betrunkenheitslevel ist auf {t.pirat.GetBetrunkenheit()} gesunken.");
                 }
                 Animation.RPGPrint($"Du hast {uInput} Nacht/Nächte geschlafen und fühlst dich ausgeruht.");
                 break;

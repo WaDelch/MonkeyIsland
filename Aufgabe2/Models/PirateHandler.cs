@@ -1,11 +1,7 @@
 ﻿using MonkeyIsland1.Controllers;
-using MonkeyIsland1.Models.Lokations;
+using MonkeyIsland1.Models.Locations;
 using MonkeyIsland1.Views;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MonkeyIsland1.Models
 {
@@ -46,11 +42,10 @@ namespace MonkeyIsland1.Models
                 if (Console.ReadKey().KeyChar != 'j')
                 {
                     Animation.RPGPrint("Programm beendet.");
+                    Console.ReadLine();
                     Environment.Exit(0);
                 }
                 Program.currentPirat = CreatePirate();
-                Program.currentInsel = Program.currentPirat.GetInsel();
-                Program.currentLokation = Program.currentPirat.GetLokation();
             }
             else
             {
@@ -64,30 +59,21 @@ namespace MonkeyIsland1.Models
                 if (Program.currentPirat == Program.piraten[Convert.ToInt32(uinput) - 1])
                 {
                     Animation.RPGPrint("Das bist du schon!");
-                    Console.ReadLine();
                     return;
                 }
                 Program.currentPirat = Program.piraten[Convert.ToInt32(uinput) - 1];
-                Program.currentLokation = Program.currentPirat.GetLokation();
-                //for (int i = 0; i < meer.GetInsel().Length; i++)
+                //foreach (Insel i in Program.meer.GetInsel())
                 //{
-                //    if (meer.GetInsel()[i].GetBesucher().Contains(currentPirat))
+                //    if (i.GetBesucher().Contains(Program.currentPirat))
                 //    {
-                //        currentInsel = meer.GetInsel()[i];
+                //        Program.currentInsel = i;
                 //        break;
                 //    }
                 //}
-                foreach (Insel i in Program.meer.GetInsel())
-                {
-                    if (i.GetBesucher().Contains(Program.currentPirat))
-                    {
-                        Program.currentInsel = i;
-                        break;
-                    }
-                }
             }
+            Program.currentInsel = Program.currentPirat.GetInsel();
+            Program.currentLokation = Program.currentPirat.GetLokation();
             Animation.RPGPrint($"Du bist jetzt \"{Program.currentPirat.GetName()}\".");
-            Console.ReadLine();
         }
     }
 }

@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using MonkeyIsland1.Controllers;
 
-namespace MonkeyIsland1.Models.Lokations
+namespace MonkeyIsland1.Models.Locations
 {
     [Serializable]
     internal class Lokation
@@ -44,9 +45,9 @@ namespace MonkeyIsland1.Models.Lokations
             this.besucher.Remove(p);
         }
 
-        //public virtual void Event()
-        //{
+        public virtual void Event(Transporter t)
+        {
 
-        //}
+        }
     }
 }

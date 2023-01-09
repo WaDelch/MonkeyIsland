@@ -1,4 +1,4 @@
-﻿using MonkeyIsland1.Models.Lokations;
+﻿using MonkeyIsland1.Models.Locations;
 using System;
 using System.Collections.Generic;
 
