@@ -5,9 +5,9 @@ using System.Linq;
 namespace MonkeyIsland1.Models.Locations
 {
     [Serializable]
-    internal class Insel : Lokation
+    internal class Isle : Location
     {
-        public Lokation[] standorte { get; private set; } = { new Kneipe(), new Strand(), new Schiff(), new Friedhof(), new Huette() };
+        public Location[] locations { get; private set; } = { new Bar(), new Beach(), new Ship(), new Graveyard(), new Hut() };
         //private Strand strand = new Strand();
         //private Kneipe kneipe = new Kneipe();
         //private Friedhof friedhof = new Friedhof();
@@ -15,17 +15,17 @@ namespace MonkeyIsland1.Models.Locations
         //                                      //Jedes Schiff hat also einen festen Heimathafen, von dem es voll abhängig ist
         //private Huette huette = new Huette();
 
-        public T GetLokation<T>() where T:Lokation //generische Get-Methode ersetzt einzelne Methoden und ist leichter skalierbar
+        public T GetLocation<T>() where T:Location //generische Get-Methode ersetzt einzelne Methoden und ist leichter skalierbar
         {
-            foreach (var item in this.standorte)
+            foreach (var item in this.locations)
                 if (item is T)
                     return (T)item;
             return null;
         }
 
-        public void SetLokation<T>(Lokation l) where T:Lokation
+        public void SetLocation<T>(Location l) where T:Location
         {
-            this.standorte.SetValue(l, Array.IndexOf(standorte, GetLokation<T>()));
+            this.locations.SetValue(l, Array.IndexOf(locations, GetLocation<T>()));
         }
 
         //public Strand GetStrand()

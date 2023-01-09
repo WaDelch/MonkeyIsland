@@ -5,8 +5,8 @@ namespace MonkeyIsland1.Controllers
 {
     internal class Transporter
     {
-        public Pirat pirat { get; set; }
-        public Meer meer { get; set; }
-        public Insel insel { get; set; }
+        public Pirate pirate { get; set; }
+        public Sea sea { get; set; }
+        public Isle isle { get; set; }
     }
 }

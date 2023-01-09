@@ -17,12 +17,12 @@ namespace MonkeyIsland1
 
     internal class Program
     {
-        public static List<Pirat> piraten = new List<Pirat>(); //Liste aller lebenden Piraten
-        const int anzahlInsel = 5;
-        public static Meer meer = new Meer(anzahlInsel);
-        public static Pirat currentPirat;
-        public static Lokation currentLokation;
-        public static Insel currentInsel;
+        public static List<Pirate> pirates = new List<Pirate>(); //Liste aller lebenden Piraten
+        const int numberOfIsles = 5;
+        public static Sea sea = new Sea(numberOfIsles);
+        public static Pirate currentPirate;
+        public static Location currentLocation;
+        public static Isle currentIsle;
         public static Random rnd = new Random();
 
         static void Main(string[] args)
@@ -34,21 +34,21 @@ namespace MonkeyIsland1
             //Animation.SkullBones();
             try
             {
-                piraten = FileHandler.LoadGame();
-                currentPirat = piraten[0];
+                pirates = FileHandler.LoadGame();
+                currentPirate = pirates[0];
                 Console.WriteLine("Spielstand wurde geladen.");
             }
             catch
             {
                 Console.WriteLine("Fehler! Spielstand konnte nicht geladen werden.\nNeues Spiel wird gestartet.");
-                currentPirat = PirateHandler.CreatePirate(); //Startpirat
+                currentPirate = PirateHandler.CreatePirate(); //Startpirat
             }
             Console.ReadLine();
 
             do //Hauptschleife, die das Spiel am Laufen hält
             {
-                currentInsel = currentPirat.GetInsel();
-                currentLokation = currentPirat.GetLokation();
+                currentIsle = currentPirate.GetIsle();
+                currentLocation = currentPirate.GetLocation();
                 Console.Clear();
 
                 //Console.WriteLine(currentInsel.GetBezeichnung());
@@ -75,14 +75,14 @@ namespace MonkeyIsland1
                 //foreach (Pirat p in currentInsel.GetLokation<Huette>().GetBesucher())
                 //    Console.WriteLine(p.GetName());
 
-                Output.ShowStats(currentPirat, meer, currentLokation);
+                Output.ShowStats(currentPirate, sea, currentLocation);
                 Animation.RPGPrint("Was möchtest Du als nächstes tun?");
-                Output.ShowMenue(Output.mainMenueOptions, Array.IndexOf(currentInsel.standorte, currentLokation));
+                Output.ShowMenue(Output.mainMenueOptions, Array.IndexOf(currentIsle.locations, currentLocation));
 
-                if (!InputCheck.CheckUInt(out uInput) || !(currentLokation is Insel) && uInput > 5
-                    || (currentLokation is Insel) && uInput > 4)
+                if (!InputCheck.CheckUInt(out uInput) || !(currentLocation is Isle) && uInput > 5
+                    || (currentLocation is Isle) && uInput > 4)
                 {
-                    FileHandler.SaveGame(piraten);
+                    FileHandler.SaveGame(pirates);
                     Animation.RPGPrint("Programm beendet. Der Spielstand wurde gespeichert.");
                     return;
                 }
@@ -94,13 +94,13 @@ namespace MonkeyIsland1
                         if (!InputCheck.CheckUInt(out uInput2) || uInput2 > Output.exploreMenueOptions.Length)
                             continue;
 
-                        if (currentInsel.standorte[uInput2 - 1].GetType() == currentLokation.GetType())
+                        if (currentIsle.locations[uInput2 - 1].GetType() == currentLocation.GetType())
                             Animation.RPGPrint("Du bist schon hier!");
                         else
                         {
-                            currentLokation = currentInsel.standorte[uInput2 - 1];
-                            currentPirat.SetLokation(currentLokation);
-                            Animation.RPGPrint($"Du hast den Standort gewechselt zu: {currentLokation.GetBezeichnung()}");
+                            currentLocation = currentIsle.locations[uInput2 - 1];
+                            currentPirate.SetLocation(currentLocation);
+                            Animation.RPGPrint($"Du hast den Standort gewechselt zu: {currentLocation.GetDescription()}");
                         }
                         break;
 
@@ -114,12 +114,12 @@ namespace MonkeyIsland1
 
                     case 4:
                         Animation.RPGPrint("Folgende Piraten befinden sich auf dieser Insel:");
-                        foreach (Pirat p in currentInsel.GetBesucher())
+                        foreach (Pirate p in currentIsle.GetVisitors())
                             Animation.RPGPrint(p.GetName());
                         break;
 
                     case 5:
-                        currentPirat.GetLokation().Event(new Transporter() { meer = meer, insel = currentInsel, pirat = currentPirat });                        
+                        currentPirate.GetLocation().Event(new Transporter() { sea = sea, isle = currentIsle, pirate = currentPirate });                        
                         break;
                     default:
                         break;

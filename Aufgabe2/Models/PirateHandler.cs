@@ -7,11 +7,11 @@ namespace MonkeyIsland1.Models
 {
     internal static class PirateHandler
     {
-        public static Pirat CreatePirate()
+        public static Pirate CreatePirate()
         {
             string name;
-            Pirat neuerPirat;
-            Insel startInsel = Program.meer.GetInsel()[Program.rnd.Next(0, Program.meer.GetInsel().Length)]; //zufällige Startinsel
+            Pirate neuerPirat;
+            Isle startInsel = Program.sea.GetIsles()[Program.rnd.Next(0, Program.sea.GetIsles().Length)]; //zufällige Startinsel
             while (true)
             {
                 Animation.RPGPrint("\nWie soll der Pirat heißen?");
@@ -25,16 +25,16 @@ namespace MonkeyIsland1.Models
                 else
                     break;
             }
-            neuerPirat = new Pirat(name, Program.meer, startInsel);
-            Program.piraten.Add(neuerPirat);
-            startInsel.AddBesucher(neuerPirat);
+            neuerPirat = new Pirate(name, Program.sea, startInsel);
+            Program.pirates.Add(neuerPirat);
+            startInsel.AddVisitor(neuerPirat);
             Animation.RPGPrint($"Der Pirat {neuerPirat.GetName()} wurde erstellt.");
             return neuerPirat;
         }
 
         public static void ChangePirate()
         {
-            if (Program.piraten.Count < 1)
+            if (Program.pirates.Count < 1)
             {
                 Animation.RPGPrint("Es gibt keine lebenden Piraten mehr!\n" +
                     "Willst du einen neuen Piraten anlegen? (j = ja)" +
@@ -45,35 +45,35 @@ namespace MonkeyIsland1.Models
                     Console.ReadLine();
                     Environment.Exit(0);
                 }
-                Program.currentPirat = CreatePirate();
+                Program.currentPirate = CreatePirate();
             }
             else
             {
                 int uinput;
                 Animation.RPGPrint("Zu welchem Piraten willst Du wechseln?");
-                for (int i = 0; i < Program.piraten.Count; i++)
-                    Animation.RPGPrint($"{i + 1}) {Program.piraten[i].GetName()}");
+                for (int i = 0; i < Program.pirates.Count; i++)
+                    Animation.RPGPrint($"{i + 1}) {Program.pirates[i].GetName()}");
                 Animation.RPGPrint(Output.back2mainMenue);
-                if (!InputCheck.CheckInt(out uinput) || uinput > Program.piraten.Count)
+                if (!InputCheck.CheckInt(out uinput) || uinput > Program.pirates.Count)
                     return;
-                if (Program.currentPirat == Program.piraten[Convert.ToInt32(uinput) - 1])
+                if (Program.currentPirate == Program.pirates[Convert.ToInt32(uinput) - 1])
                 {
                     Animation.RPGPrint("Das bist du schon!");
                     return;
                 }
-                Program.currentPirat = Program.piraten[Convert.ToInt32(uinput) - 1];
-                //foreach (Insel i in Program.meer.GetInsel())
+                Program.currentPirate = Program.pirates[Convert.ToInt32(uinput) - 1];
+                //foreach (Insel i in Program.sea.GetInsel())
                 //{
-                //    if (i.GetBesucher().Contains(Program.currentPirat))
+                //    if (i.GetBesucher().Contains(Program.currentPirate))
                 //    {
                 //        Program.currentInsel = i;
                 //        break;
                 //    }
                 //}
             }
-            Program.currentInsel = Program.currentPirat.GetInsel();
-            Program.currentLokation = Program.currentPirat.GetLokation();
-            Animation.RPGPrint($"Du bist jetzt \"{Program.currentPirat.GetName()}\".");
+            Program.currentIsle = Program.currentPirate.GetIsle();
+            Program.currentLocation = Program.currentPirate.GetLocation();
+            Animation.RPGPrint($"Du bist jetzt \"{Program.currentPirate.GetName()}\".");
         }
     }
 }

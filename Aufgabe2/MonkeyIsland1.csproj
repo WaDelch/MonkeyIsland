@@ -62,18 +62,18 @@
     <Compile Include="Models\FileHandler.cs" />
     <Compile Include="Models\PirateHandler.cs" />
     <Compile Include="Views\Animation.cs" />
-    <Compile Include="Models\Locations\Friedhof.cs" />
-    <Compile Include="Models\Locations\Huette.cs" />
+    <Compile Include="Models\Locations\Graveyard.cs" />
+    <Compile Include="Models\Locations\Hut.cs" />
     <Compile Include="Controllers\InputCheck.cs" />
-    <Compile Include="Models\Locations\Insel.cs" />
-    <Compile Include="Models\Locations\Kneipe.cs" />
-    <Compile Include="Models\Locations\Lokation.cs" />
-    <Compile Include="Models\Meer.cs" />
-    <Compile Include="Models\Pirat.cs" />
+    <Compile Include="Models\Locations\Isle.cs" />
+    <Compile Include="Models\Locations\Bar.cs" />
+    <Compile Include="Models\Locations\Location.cs" />
+    <Compile Include="Models\Sea.cs" />
+    <Compile Include="Models\Pirate.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Models\Locations\Schiff.cs" />
-    <Compile Include="Models\Locations\Strand.cs" />
+    <Compile Include="Models\Locations\Ship.cs" />
+    <Compile Include="Models\Locations\Beach.cs" />
     <Compile Include="Views\Output.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -9,7 +9,7 @@ namespace MonkeyIsland1.Models
         static string savePath = System.IO.Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + "\\save.bin";
         static BinaryFormatter bf = new BinaryFormatter();
 
-        public static void SaveGame(List<Pirat> p)
+        public static void SaveGame(List<Pirate> p)
         {
             using (FileStream fs = File.Open(savePath, FileMode.Create))
             {
@@ -17,11 +17,11 @@ namespace MonkeyIsland1.Models
             }
         }
 
-        public static List<Pirat> LoadGame()
+        public static List<Pirate> LoadGame()
         {
             using (FileStream fs = File.Open(savePath, FileMode.Open))
             {
-               return (List<Pirat>)bf.Deserialize(fs);
+               return (List<Pirate>)bf.Deserialize(fs);
             }
         }
     }

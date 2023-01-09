@@ -30,11 +30,11 @@ namespace MonkeyIsland1.Views
                 Animation.RPGPrint(back2mainMenue);
         }
 
-        public static void ShowStats(Pirat p, Meer m, Lokation l)
+        public static void ShowStats(Pirate p, Sea m, Location l)
         {
             string tLine = new String('-', 50 + p.GetName().Length);
             string[] statNames = { "Name", "Meer", "Standort", "Betrunkenheitslevel", "Taler" };
-            string[] stats = { p.GetName(), m.GetBezeichnung(), l.GetBezeichnung(), p.GetBetrunkenheit().ToString() + "/5", p.GetTaler().ToString() };
+            string[] stats = { p.GetName(), m.GetDescription(), l.GetDescription(), p.GetDrunkenness().ToString() + "/5", p.GetCoins().ToString() };
             Console.WriteLine(tLine);
             for (int i = 0; i < stats.Length; i++)
             {
