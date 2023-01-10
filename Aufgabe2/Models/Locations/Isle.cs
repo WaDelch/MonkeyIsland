@@ -15,7 +15,7 @@ namespace MonkeyIsland1.Models.Locations
         //                                      //Jedes Schiff hat also einen festen Heimathafen, von dem es voll abhängig ist
         //private Huette huette = new Huette();
 
-        public T GetLocation<T>() where T:Location //generische Get-Methode ersetzt einzelne Methoden und ist leichter skalierbar
+        public T GetLocation<T>() where T:Location//generische Get-Methode ersetzt einzelne Methoden und ist leichter skalierbar
         {
             foreach (var item in this.locations)
                 if (item is T)

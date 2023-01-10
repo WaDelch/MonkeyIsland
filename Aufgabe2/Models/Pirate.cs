@@ -1,5 +1,7 @@
-﻿using MonkeyIsland1.Models.Locations;
-using System;
+﻿using System;
+using System.Collections.Generic;
+using MonkeyIsland1.Models.Locations;
+
 namespace MonkeyIsland1.Models
 {
     [Serializable]
@@ -7,7 +9,7 @@ namespace MonkeyIsland1.Models
     {
         private string name;
         private Location location;
-        //private Standort standort;
+        private List<pItem> inventory;
         private Isle isle;
         private int drunkenness;
         private int coins;
@@ -27,10 +29,10 @@ namespace MonkeyIsland1.Models
                 this.coins = 0;
         }
 
-        public string GetName()
-        {
-            return this.name;
-        }
+        public string GetName() => this.name;
+        //{
+        //    return this.name;
+        //}
 
         public void SetName(string n)
         {
@@ -47,60 +49,55 @@ namespace MonkeyIsland1.Models
 
         public void SetLocation(Location l)
         {
-            if (this.location != null) //Pirat verlässt vorherigen Standort, falls vorhanden.
+            if (this.location != null)          //Pirat verlässt vorherigen Standort, falls vorhanden.
                 this.location.DelVisitor(this);
-            this.location = l; //Pirat wechselt zu neuem Standort
-            this.location.AddVisitor(this); //Pirat wird in neuem Standort aufgenommen
+            this.location = l;                  //Pirat wechselt zu neuem Standort
+            this.location.AddVisitor(this);     //Pirat wird in neuem Standort aufgenommen
         }
 
-        //public Standort GetStandort()
-        //{
-        //    return this.standort;
-        //}
+        public List<pItem> GetInventory() => this.inventory;
 
-        //public void SetStandort(Standort s)
-        //{
-        //    this.standort = s;
-        //}
-
-        public Isle GetIsle()
+        public void SetInventory(List<pItem> s)
         {
-            return this.isle;
+            this.inventory = s;
         }
+
+        public void AddItem(pItem i)
+        {
+            this.inventory.Add(i);
+        }
+
+        public void DelItem(pItem i)
+        {
+            this.inventory.Remove(i);
+        }
+
+        public Isle GetIsle() => this.isle;
 
         public void SetIsle(Isle i)
         {
-            this.isle.DelVisitor(this);   //Pirat ist nicht mehr auf der vorherigen Insel
-            this.location.DelVisitor(this);//Pirat ist nicht mehr auf vorherigem Standort    
-            this.isle = i;                 //Pirat wechselt zur neuen Insel
-            this.isle.AddVisitor(this);   //Pirat wird auf neuer Insel aufgenommen
+            this.isle.DelVisitor(this);     //Pirat ist nicht mehr auf der vorherigen Insel
+            this.location.DelVisitor(this); //Pirat ist nicht mehr auf vorherigem Standort    
+            this.isle = i;                  //Pirat wechselt zur neuen Insel
+            this.isle.AddVisitor(this);     //Pirat wird auf neuer Insel aufgenommen
             this.location = null;           //Pirat befindet sich noch an keinem anderen Standort
         }
 
-        public Sea GetSea()
-        {
-            return this.sea;
-        }
+        public Sea GetSea() => this.sea;
 
         public void SetSea(Sea s)
         {
             this.sea = s;
         }
 
-        public int GetDrunkenness()
-        {
-            return this.drunkenness;
-        }
+        public int GetDrunkenness() => this.drunkenness;
 
         public void SetDrunkenness(int i)
         {
             this.drunkenness = i;
         }
 
-        public int GetCoins()
-        {
-            return this.coins;
-        }
+        public int GetCoins() => this.coins;
 
         public void SetCoins(int t)
         {

@@ -12,20 +12,14 @@ namespace MonkeyIsland1.Models.Locations
         public int randomInt;
         public uint uInput;
 
-        public String GetDescription()
-        {
-            return this.description;
-        }
+        public String GetDescription() => this.description;
 
         public void SetDescription(string b)
         {
             this.description = b;
         }
 
-        public List<Pirate> GetVisitors()
-        {
-            return this.visitors;
-        }
+        public List<Pirate> GetVisitors() => this.visitors;
 
         public void SetVisitors(List<Pirate> p)
         {

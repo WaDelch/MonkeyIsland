@@ -29,29 +29,21 @@ namespace MonkeyIsland1.Models
             }
         }
 
-        public string GetDescription()
-        {
-            return this.description;
-        }
+        public string GetDescription() => this.description;
 
         public void SetDescription(string s)
         {
             this.description = s;
         }
 
-        public Isle[] GetIsles()
-        {
-            return this.isles;
-        }
+        public Isle[] GetIsles() => this.isles;
+
         public void SetIsles(Isle[] i)
         {
             this.isles = i;
         }
 
-        public List<Ship> GetShips()
-        {
-            return this.ships;
-        }
+        public List<Ship> GetShips() => this.ships;
 
         public void SetShips(List<Ship> s)
         {
@@ -67,15 +59,14 @@ namespace MonkeyIsland1.Models
         {
             this.ships.Remove(s);
         }
-        public List<Pirate> GetPirates()
-        {
-            return this.pirates;
-        }
+        public List<Pirate> GetPirates() => this.pirates;
+
         public void AddPirate(Pirate p)
         {
             this.pirates.Add(p);
             p.GetLocation().DelVisitor(p);
         }
+
         public void DelPirate(Pirate p)
         {
             this.pirates.Remove(p);

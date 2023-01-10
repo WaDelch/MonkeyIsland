@@ -10,10 +10,7 @@ namespace MonkeyIsland1.Models.Locations
     {
         private List<string> permanentVisitors = new List<string>();
 
-        public List<string> GetPermanentVisitors()
-        {
-            return this.permanentVisitors;
-        }
+        public List<string> GetPermanentVisitors() => this.permanentVisitors;
 
         public void SetPermanentVisitors(List<string> p)
         {

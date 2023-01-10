@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MonkeyIsland1.Controllers;
+﻿using MonkeyIsland1.Controllers;
 using MonkeyIsland1.Views;
+using System;
 
 namespace MonkeyIsland1.Models.Locations
 {
+    public enum pItem { Sword, EyePatch, Parrot, WoodenLeg }
+
     [Serializable]
     internal class Shop : Location
     {
