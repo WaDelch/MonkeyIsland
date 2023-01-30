@@ -9,7 +9,7 @@ namespace MonkeyIsland1.Models
     {
         private string name;
         private Location location;
-        private List<pItem> inventory;
+        private List<pItem> inventory = new List<pItem>();
         private Isle isle;
         private int drunkenness;
         private int coins;
@@ -18,7 +18,6 @@ namespace MonkeyIsland1.Models
         public Pirate(string n, Sea s, Isle i, Location l = null)
         {
             this.name = n;
-            //this.standort = Standort.Insel;
             this.location = l;
             this.isle = i;
             this.sea = s;
@@ -41,10 +40,11 @@ namespace MonkeyIsland1.Models
 
         public Location GetLocation()
         {
-            if (this.location != null)
-                return this.location;
-            else
-                return this.isle;
+            //if (this.location != null)
+            //    return this.location;
+            //else
+            //    return this.isle;
+            return this.location ?? this.isle;
         }
 
         public void SetLocation(Location l)

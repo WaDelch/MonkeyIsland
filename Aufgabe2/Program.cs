@@ -13,13 +13,12 @@ using System.Text;
 
 namespace MonkeyIsland1
 {
-    public enum Items { Sword, EyePatch, Parrot, WoodenLeg }
 
     internal class Program
     {
-        public static List<Pirate> pirates = new List<Pirate>(); //Liste aller lebenden Piraten
+        public static List<Pirate> pirates; //Liste aller lebenden Piraten
         const int numberOfIsles = 5;
-        public static Sea sea = new Sea(numberOfIsles);
+        public static Sea sea;
         public static Pirate currentPirate;
         public static Location currentLocation;
         public static Isle currentIsle;
@@ -36,11 +35,14 @@ namespace MonkeyIsland1
             {
                 pirates = FileHandler.LoadGame();
                 currentPirate = pirates[0];
+                sea = currentPirate.GetSea();
                 Console.WriteLine("Spielstand wurde geladen.");
             }
             catch
             {
                 Console.WriteLine("Fehler! Spielstand konnte nicht geladen werden.\nNeues Spiel wird gestartet.");
+                sea = new Sea(numberOfIsles);
+                pirates = new List<Pirate>();
                 currentPirate = PirateHandler.CreatePirate(); //Startpirat
             }
             Console.ReadLine();
@@ -51,8 +53,8 @@ namespace MonkeyIsland1
                 currentLocation = currentPirate.GetLocation();
                 Console.Clear();
 
-                //Console.WriteLine(currentInsel.GetBezeichnung());
-                //foreach (Pirat p in currentInsel.GetBesucher())
+                //Console.WriteLine(currentIsle.GetDescription());
+                //foreach (Pirate p in currentIsle.GetVisitors())
                 //    Console.WriteLine(p.GetName());
 
                 //Console.WriteLine(currentInsel.GetLokation<Kneipe>().GetBezeichnung());
@@ -119,6 +121,11 @@ namespace MonkeyIsland1
                         break;
 
                     case 5:
+                        Animation.RPGPrint("Du hast folgende Items in deinem Inventar:");
+                        foreach (pItem item in currentPirate.GetInventory())
+                            Animation.RPGPrint("* " + item.ToString());
+                        break;
+                    case 6:
                         currentPirate.GetLocation().Event(new Transporter() { sea = sea, isle = currentIsle, pirate = currentPirate });                        
                         break;
                     default:
