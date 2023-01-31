@@ -8,11 +8,11 @@ namespace MonkeyIsland1.Models.Locations
     internal class Bar : Location
     {
         string[] drinksList = { "Wasser", "Bier", "Grog", "Selbstgebraute Hausmarke" };
-        int[] drinksPrices = { 1, 3, 4, 6 };     
+        int[] drinksPrices = { 1, 3, 4, 6 };
 
         public override void Event(Transporter t)
         {
-            do
+            while(true)
             {
                 Console.Clear();
                 Animation.RPGPrint($"~~~=== {this.GetDescription()} ===~~~");
@@ -51,8 +51,9 @@ namespace MonkeyIsland1.Models.Locations
                 else
                     Animation.Drink();
                 Animation.RPGPrint("Willst du weitertrinken? (j = ja)\n" + Output.back2mainMenue);
-            } while (Console.ReadKey().KeyChar == 'j');
+                if (!InputCheck.CheckString())
+                    break;
+            }
         }
-
     }
 }

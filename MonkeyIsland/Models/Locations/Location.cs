@@ -10,7 +10,7 @@ namespace MonkeyIsland1.Models.Locations
         private string description;
         private List<Pirate> visitors = new List<Pirate>();
         public int randomInt;
-        public uint uInput;
+        public static uint uInput;
 
         public String GetDescription() => this.description;
 

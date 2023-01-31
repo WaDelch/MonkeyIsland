@@ -30,5 +30,13 @@ namespace MonkeyIsland1.Controllers
             else
                 return false;
         }
+
+        public static bool CheckString(string s = "j")
+        {
+            if (Console.ReadLine().ToLower() == s)
+                return true;
+            else
+                return false;
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using MonkeyIsland1.Models.Locations;
 
 namespace MonkeyIsland1.Models
@@ -9,7 +10,7 @@ namespace MonkeyIsland1.Models
     {
         private string name;
         private Location location;
-        private List<pItem> inventory = new List<pItem>();
+        public bool[] inventory = new bool[Shop.nItems];
         private Isle isle;
         private int drunkenness;
         private int coins;
@@ -55,21 +56,21 @@ namespace MonkeyIsland1.Models
             this.location.AddVisitor(this);     //Pirat wird in neuem Standort aufgenommen
         }
 
-        public List<pItem> GetInventory() => this.inventory;
+        public bool[] GetInventory() => this.inventory;
 
-        public void SetInventory(List<pItem> s)
+        public void SetInventory(bool[] inv)
         {
-            this.inventory = s;
+            this.inventory = inv;
         }
 
-        public void AddItem(pItem i)
+        public void AddItem(int iPosition)
         {
-            this.inventory.Add(i);
+            this.inventory[iPosition] = true;
         }
 
-        public void DelItem(pItem i)
+        public void DelItem(int iPosition)
         {
-            this.inventory.Remove(i);
+            this.inventory[iPosition] = false;
         }
 
         public Isle GetIsle() => this.isle;

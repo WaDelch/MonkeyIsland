@@ -9,7 +9,7 @@ namespace MonkeyIsland1.Models.Locations
     {
         public override void Event(Transporter t)
         {
-            do
+            while(true)
             {
                 Console.Clear();
                 Animation.RPGPrint($"~~~=== {this.GetDescription()} ===~~~");
@@ -31,7 +31,9 @@ namespace MonkeyIsland1.Models.Locations
                     Animation.RPGPrint("Du hast nichts gefunden.");
                 Animation.RPGPrint($"Du hast jetzt {t.pirate.GetCoins()} Taler.");
                 Animation.RPGPrint("Willst du weitergraben? (j = ja)\n" + Output.back2mainMenue);
-            } while (Console.ReadKey().KeyChar == 'j');
+                if (!InputCheck.CheckString())
+                    break;
+            }
         }
     }
 }

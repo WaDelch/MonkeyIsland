@@ -7,7 +7,8 @@ namespace MonkeyIsland1.Models.Locations
     [Serializable]
     internal class Isle : Location
     {
-        public Location[] locations { get; private set; } = { new Bar(), new Beach(), new Ship(), new Graveyard(), new Hut(), new Shop() };
+        private Location[] locations = { new Bar(), new Beach(), new Ship(), new Graveyard(), new Hut(), new Shop() };
+        public Location[] Locations => locations;
         //private Strand strand = new Strand();
         //private Kneipe kneipe = new Kneipe();
         //private Friedhof friedhof = new Friedhof();

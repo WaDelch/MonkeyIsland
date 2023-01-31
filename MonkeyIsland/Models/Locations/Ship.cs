@@ -99,7 +99,7 @@ namespace MonkeyIsland1.Models.Locations
                         "die dich langsam verschlingt...");
                     Program.pirates.Remove(t.pirate); //Pirat nicht mehr in der Liste der lebenden Piraten
 
-                    Animation.RPGPrint($"Du wurdest auf dem Friedhof \"{t.pirate.GetIsle().GetLocation<Graveyard>().GetDescription()}\"" +
+                    Animation.RPGPrint($"Du wurdest auf dem Friedhof \"{t.pirate.GetIsle().GetLocation<Graveyard>().GetDescription()}\" " +
                                        $"der Insel \"{t.pirate.GetIsle().GetDescription()}\" beerdigt.");
                     t.pirate.GetIsle().GetLocation<Graveyard>().AddPermanentVisitor(t.pirate); //Pirat auf dem Friedhof der zuletzt besuchten Insel beerdigt
                     Console.ReadLine();
