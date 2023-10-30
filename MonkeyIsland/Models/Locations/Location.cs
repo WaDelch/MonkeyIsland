@@ -5,7 +5,7 @@ using MonkeyIsland1.Controllers;
 namespace MonkeyIsland1.Models.Locations
 {
     [Serializable]
-    internal class Location
+    internal abstract class Location
     {
         private string description;
         private List<Pirate> visitors = new List<Pirate>();

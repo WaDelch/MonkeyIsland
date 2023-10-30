@@ -25,8 +25,9 @@ namespace MonkeyIsland1.Views
                 Console.ForegroundColor = ConsoleColor.DarkCyan;
                 Animation.RPGPrint(++i + ") " + bonusOptions[bonusIndex]);
                 Console.ForegroundColor = ConsoleColor.Gray;
-                Animation.RPGPrint("Sonstige Eingabe = Programm beenden");
             }
+            if (options[0] == "Insel erkunden")
+                Animation.RPGPrint("Sonstige Eingabe = Programm beenden");
             else
                 Animation.RPGPrint(back2mainMenue);
         }
