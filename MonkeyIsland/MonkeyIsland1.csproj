@@ -59,9 +59,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\Transporter.cs" />
-    <Compile Include="Models\FileHandler.cs" />
+    <Compile Include="Controllers\FileHandler.cs" />
     <Compile Include="Models\Locations\Shop.cs" />
-    <Compile Include="Models\PirateHandler.cs" />
+    <Compile Include="Controllers\PirateHandler.cs" />
     <Compile Include="Views\Animation.cs" />
     <Compile Include="Models\Locations\Graveyard.cs" />
     <Compile Include="Models\Locations\Hut.cs" />
