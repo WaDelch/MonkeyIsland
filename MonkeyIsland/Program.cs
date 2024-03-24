@@ -32,7 +32,7 @@ namespace MonkeyIsland1
             Console.OutputEncoding = Encoding.UTF8; //notwendig für einige Animationen
 
             Animation.RPGPrint("Willkommen beim Piratenspiel! Yarr!");
-            //Animation.SkullBones();
+            Animation.SkullBones();
             try
             {
                 pirates = FileHandler.LoadGame();
