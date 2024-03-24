@@ -1,23 +1,24 @@
 ﻿using MonkeyIsland1.Controllers;
 using System;
 using static MonkeyIsland1.Program;
+using MonkeyIsland1.Views;
 
-namespace MonkeyIsland1.Models.Lokation
+namespace MonkeyIsland1.Models.Locations
 {
     [Serializable]
-    internal class Schiff : Lokation
+    internal class Ship : Location
     {
-        public void Event(Meer eMeer, ref Insel eInsel, ref Pirat ePirat)
+        public override void Event(Transporter t)
         {
             uint uInput2;
             Animation.RPGPrint("Zu welcher Insel möchtest du fahren?");
-            for (int i = 0; i < eMeer.GetInsel().Length; i++) //length = 3
-                Animation.RPGPrint($"{i + 1}) {eMeer.GetInsel()[i].GetBezeichnung()}");
-            Animation.RPGPrint(menue);
-            if (!InputCheck.CheckUInt(out uInput) || uInput > eMeer.GetInsel().Length)
+            for (int i = 0; i < t.sea.GetIsles().Length; i++) //length = 3
+                Animation.RPGPrint($"{i + 1}) {t.sea.GetIsles()[i].GetDescription()}");
+            Animation.RPGPrint(Output.back2mainMenue);
+            if (!InputCheck.CheckUInt(out uInput) || uInput > t.sea.GetIsles().Length)
                 return;
 
-            if (uInput - 1 == Array.IndexOf(eMeer.GetInsel(), eInsel))
+            if (uInput - 1 == Array.IndexOf(t.sea.GetIsles(), t.isle))
             {
                 Animation.RPGPrint("Du bist schon hier!");
                 return;
@@ -25,16 +26,16 @@ namespace MonkeyIsland1.Models.Lokation
 
             //Schiff fährt los
             Console.Clear();
-            eInsel.DelBesucher(ePirat); //Pirat nicht mehr auf der alten Insel
-            eInsel.GetSchiff().DelBesucher(ePirat); //Pirat nicht mehr auf dem Schiff (Resultat aller derzeit implementierten, folgenden Aktionen)
+            t.isle.DelVisitor(t.pirate); //Pirat nicht mehr auf der alten Insel
+            t.isle.GetLocation<Ship>().DelVisitor(t.pirate); //Pirat nicht mehr auf dem Schiff (Resultat aller derzeit implementierten, folgenden Aktionen)
             Console.SetCursorPosition(0, 6);
-            Console.WriteLine(eInsel.GetBezeichnung()); //Startinsel anzeigen
-            Console.SetCursorPosition(99 - eInsel.GetBezeichnung().Length, 6);
-            eInsel = eMeer.GetInsel()[uInput - 1]; //wechsle Insel
-            Console.WriteLine(eInsel.GetBezeichnung()); //Zielinsel anzeigen
+            Console.WriteLine(t.isle.GetDescription()); //Startinsel anzeigen
+            Console.SetCursorPosition(99 - t.isle.GetDescription().Length, 6);
+            t.isle = t.sea.GetIsles()[uInput - 1]; //wechsle Insel
+            Console.WriteLine(t.isle.GetDescription()); //Zielinsel anzeigen
 
-            randomZahl = rnd.Next(1, 101) + 5 * ePirat.GetBetrunkenheit(); //Chance vom Schiff zu fallen
-            if (randomZahl > 95) //Pirat vom Schiff gefallen
+            randomInt = rnd.Next(1, 101) + 5 * t.pirate.GetDrunkenness(); //Chance vom Schiff zu fallen, +5% pro Drunkennessslevel
+            if (randomInt > 95) //Pirat vom Schiff gefallen
             {
                 Animation.Ship(true); //Schiffsanimation bricht ab, weil der Pirat vom Schiff gefallen ist
                 int drownChance = 0; //Chance zu ertrinken, steigt mit jeder folgenden Aktion/Entscheidung
@@ -59,7 +60,7 @@ namespace MonkeyIsland1.Models.Lokation
                             "Deine Körpertemperatur und Überlebenschance sinkt!");
                         Console.ReadLine();
                         drownChance += 5;
-                        return;
+                        continue;
                     }
                     switch (uInput2)
                     {
@@ -92,13 +93,15 @@ namespace MonkeyIsland1.Models.Lokation
                     if (drownChance > 99) //zu viele falsche Entscheidungen = ertrunken
                         break;
                 } while (true);
-                if (drownChance + 5 * ePirat.GetBetrunkenheit() > rnd.Next(1, 101)) //prüfen, ob ertrunken
+                if (drownChance + 5 * t.pirate.GetDrunkenness() > rnd.Next(1, 101)) //prüfen, ob ertrunken
                 {
                     Animation.RPGPrint("Das letzte was du spürst ist eine allumfassende Kälte,\n" +
                         "die dich langsam verschlingt...");
-                    Program.piraten.Remove(ePirat); //Pirat nicht mehr in der Liste der lebenden Piraten
+                    Program.pirates.Remove(t.pirate); //Pirat nicht mehr in der Liste der lebenden Piraten
 
-                    ePirat.GetHeimat().GetFriedhof().AddDauerbesucher(ePirat); //Pirat auf dem Friedhof seiner Heimatsinsel beerdigt
+                    Animation.RPGPrint($"Du wurdest auf dem Friedhof \"{t.pirate.GetIsle().GetLocation<Graveyard>().GetDescription()}\" " +
+                                       $"der Insel \"{t.pirate.GetIsle().GetDescription()}\" beerdigt.");
+                    t.pirate.GetIsle().GetLocation<Graveyard>().AddPermanentVisitor(t.pirate); //Pirat auf dem Friedhof der zuletzt besuchten Insel beerdigt
                     Console.ReadLine();
                     Console.Clear();
                     Animation.RPGPrint("Du bist gestorben!");
@@ -110,45 +113,41 @@ namespace MonkeyIsland1.Models.Lokation
                         "Sonstige Eingabe = Programm beenden");
                     if (!InputCheck.CheckUInt(out uInput2) || uInput2 > 2)
                     {
-                        Animation.RPGPrint("Programm beendet.");
-                        return;
+                        FileHandler.SaveGame();
+                        Animation.RPGPrint(Output.closeAndSaveGame);
+                        Environment.Exit(0);
                     }
                     if (uInput2 == 1)
                     {
-                        Program.ChangePirate();
-                        return;
+                        PirateHandler.ChangePirate();
+                        return;                        
                     }
                     else if (uInput2 == 2)
                     {
-                        Program.CreatePirate();
-                        Program.ChangePirate();
+                        PirateHandler.CreatePirate();
+                        PirateHandler.ChangePirate();
                         return;
                     }
                 }
                 else //Pirat konnte sich retten
                 {
-                    eInsel = eMeer.GetInsel()[rnd.Next(0, eMeer.GetInsel().Length)]; //auf zufällige Insel gerettet
-                    eInsel.AddBesucher(ePirat);
-                    ePirat.SetStandort(eInsel);
-                    currentStandort = Standort.Strand;
+                    t.isle = t.sea.GetIsles()[rnd.Next(0, t.sea.GetIsles().Length)]; //auf zufällige Insel gerettet
+                    t.pirate.SetIsle(t.isle);
+                    t.pirate.SetLocation(t.isle.GetLocation<Beach>()); //Pirat konnte sich an den Inselstrand retten
                     Console.Clear();
                     Animation.RPGPrint("...\n....\n.....", 150);
-                    Animation.RPGPrint("Das Rauschen des eMeeres weckt dich auf.\nEs dauert einen Moment\n" +
+                    Animation.RPGPrint("Das Rauschen des Meeres weckt dich auf.\nEs dauert einen Moment\n" +
                         "bis du zu dir kommst und dich orientierst...\n" +
                         "Schließlich stellst du fest, dass du an Land gespült wurdest!\n" +
-                        $"Du befindest dich jetzt auf dem Strand der Insel \"{eInsel.GetBezeichnung()}\"");
+                        $"Du befindest dich jetzt auf dem Strand der Insel \"{t.isle.GetDescription()}\"");
                     return;
                 }
             }
             //sichere Überfahrt
-            eInsel.AddBesucher(ePirat); //Pirat auf neuer Insel
-            ePirat.SetStandort(eInsel); //Pirat hat neue Insel als Standort 
-            currentStandort = Standort.Insel;
+            t.pirate.SetIsle(t.isle); //Pirat hat neue Insel als Standort 
             Animation.Ship();
             Console.SetCursorPosition(0, 0);
-            Animation.RPGPrint($"Du bist zur Insel \"{eInsel.GetBezeichnung()}\" gefahren.");
-            return;
+            Animation.RPGPrint($"Du bist zur Insel \"{t.isle.GetDescription()}\" gefahren.");
         }
-
     }
 }

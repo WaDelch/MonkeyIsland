@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace MonkeyIsland1.Controllers
 {
-    internal class InputCheck
+    internal static class InputCheck
     {
         public static bool CheckInt(out int uinput)
         {
@@ -26,6 +26,14 @@ namespace MonkeyIsland1.Controllers
         public static bool CheckAlphaNum(string s)
         {
             if (s.All(char.IsLetterOrDigit) && s != "")
+                return true;
+            else
+                return false;
+        }
+
+        public static bool CheckString(string s = "j")
+        {
+            if (Console.ReadLine().ToLower() == s)
                 return true;
             else
                 return false;
